@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitPro AI 🔥</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0A0C10;--bg2:#0F1218;--card:#13161F;--border:#1C2030;--text:#E6E8EF;--text2:#9CA3AF;--text3:#6B7280;--v:#a78bfa;--c:#22d3ee;--ok:#10b981;--err:#ef4444;--warn:#f59e0b;--fire:#ff6b35;--gold:#fbbf24;--grad:linear-gradient(135deg,#ff6b35 0%,#f7931e 50%,#ffcc00 100%);--r:20px;--r2:28px}
+html[data-theme="light"]{--bg:#f8fafc;--bg2:#f1f5f9;--card:#ffffff;--border:#e2e8f0;--text:#1e293b;--text2:#475569;--text3:#94a3b8}
+html,body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
+body{background:radial-gradient(ellipse at top,rgba(255,107,53,.08),transparent 50%),var(--bg)}
+html[data-theme="light"] body{background:radial-gradient(ellipse at top,rgba(255,107,53,.05),transparent 50%),var(--bg)}
+.app{max-width:1200px;margin:0 auto;padding:16px;min-height:100vh;position:relative;z-index:1}
+.main-layout{display:grid;grid-template-columns:300px 1fr 300px;gap:16px;align-items:start}
+.main-content{min-width:0}
+.sidebar{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow-y:auto}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:24px;margin-bottom:16px;transition:all .3s ease}
+.card:hover{border-color:var(--fire);box-shadow:0 0 30px rgba(255,107,53,.15)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 28px;background:var(--grad);color:#fff;border:none;border-radius:var(--r);font-weight:700;font-size:15px;cursor:pointer;width:100%;font-family:inherit;transition:all .3s ease}
+.btn:hover:not(:disabled){transform:scale(1.05);box-shadow:0 0 30px rgba(255,107,53,.6)}
+.btn:disabled{opacity:.3;cursor:not-allowed}
+.btn-fire{background:var(--grad)!important;box-shadow:0 0 20px rgba(255,107,53,.5)}
+.btn-o{background:transparent;border:2px solid var(--v);color:var(--v);box-shadow:none}
+.btn-g{background:transparent;border:1px solid var(--border);color:var(--text2);box-shadow:none}
+.btn-g:hover{background:var(--bg2);color:var(--text)}
+.btn-s{padding:10px 18px;font-size:13px;width:auto;border-radius:14px}
+.btn-ok{background:var(--ok)}
+.btn-err{background:var(--err)}
+.inp{width:100%;padding:14px 18px;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r);font-size:15px;color:var(--text);font-family:inherit;margin-bottom:16px;transition:all .3s ease}
+.inp:focus{outline:none;border-color:var(--fire);box-shadow:0 0 0 4px rgba(255,107,53,.4)}
+.chip{display:flex;align-items:center;gap:14px;padding:16px;background:var(--bg2);border:2px solid var(--border);border-radius:var(--r);cursor:pointer;margin-bottom:12px;transition:all .3s ease}
+.chip:hover{border-color:var(--fire);background:rgba(255,107,53,.06)}
+.chip.sel{border-color:var(--fire);background:rgba(255,107,53,.12);box-shadow:0 0 0 3px rgba(139,92,246,.25)}
+.chip input{margin:0;width:20px;height:20px;accent-color:var(--fire);pointer-events:none}
+.prog{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:24px}
+.prog-f{height:100%;background:var(--grad)!important;transition:width .5s ease}
+.tabs{display:flex;gap:6px;padding:5px;background:var(--bg2);border-radius:var(--r);margin-bottom:20px;border:1px solid var(--border);overflow-x:auto}
+.tab{flex:1;padding:12px 16px;text-align:center;cursor:pointer;border-radius:14px;font-weight:600;font-size:13px;color:var(--text2);white-space:nowrap;transition:all .3s ease}
+.tab:hover{color:var(--text)}
+.tab.on{background:var(--grad);color:#fff;box-shadow:0 0 20px rgba(255,107,53,.4)}
+.hide{display:none!important}
+.grad{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800}
+.muted{color:var(--text3)}.sm{font-size:13px}.xs{font-size:11px}
+.flex{display:flex}.ic{align-items:center}.jb{justify-content:space-between}.gap{gap:12px}
+.center{text-align:center}
+.streak{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:12px;font-weight:800}
+.streak .f{font-size:18px}
+.streak-fire{background:linear-gradient(135deg,rgba(255,107,53,.2),rgba(247,147,30,.2))!important;color:var(--fire)!important;border:1px solid var(--fire)!important;box-shadow:0 0 20px rgba(255,107,53,.4)}
+.streak-fire .f{animation:fireFlicker .5s ease-in-out infinite}
+@keyframes fireFlicker{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+.day{border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:14px;background:var(--bg2);transition:all .3s ease}
+.day h4{color:var(--v);margin-bottom:14px;font-size:16px;font-weight:700;display:flex;align-items:center;gap:10px}
+.day-date{font-size:12px;color:var(--text3);font-weight:500}
+.day.rest{opacity:.8;background:linear-gradient(135deg,rgba(16,185,129,.05),rgba(34,211,238,.05));border-color:var(--ok)}
+.day.locked{opacity:.5;background:repeating-linear-gradient(45deg,var(--bg2),var(--bg2) 10px,rgba(107,114,128,.1) 10px,rgba(107,114,128,.1) 20px)}
+.day.today{border-color:var(--fire)!important;border-width:2px;box-shadow:0 0 20px rgba(255,107,53,.4)}
+.day.today h4::before{content:'🔥 '}
+.day-actions{display:flex;gap:8px;margin-top:14px}
+.day-actions .btn{flex:1}
+.ex{padding:10px 0;border-bottom:1px dashed var(--border);font-size:14px}
+.ex:last-child{border-bottom:none}
+.ex-name{font-weight:600}
+.ex-meta{color:var(--text2);font-size:13px;text-align:right}
+.ex-meta strong{color:var(--fire)}
+.tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700;margin-left:6px;text-transform:uppercase}
+.tag-c{background:rgba(255,107,53,.15);color:var(--fire)}
+.tag-s{background:rgba(139,92,246,.15);color:var(--v)}
+.meal{border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:14px;background:var(--bg2);transition:all .3s ease}
+.meal:hover{border-color:var(--fire);box-shadow:0 0 20px rgba(255,107,53,.15)}
+.meal-name{font-weight:700;font-size:16px}
+.meal-g{font-size:12px;color:var(--text3);background:var(--card);padding:4px 10px;border-radius:8px;margin-top:4px;display:inline-block}
+.macros{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.pill{padding:6px 12px;border-radius:12px;font-size:12px;font-weight:600;border:1px solid}
+.pill-k{background:linear-gradient(135deg,rgba(255,107,53,.15),rgba(247,147,30,.15))!important;color:var(--fire)!important;border-color:var(--fire)!important}
+.pill-p{background:rgba(34,211,238,.12);color:var(--c);border-color:rgba(34,211,238,.3)}
+.pill-f{background:rgba(245,158,11,.12);color:var(--warn);border-color:rgba(245,158,11,.3)}
+.pill-c{background:rgba(16,185,129,.12);color:var(--ok);border-color:rgba(16,185,129,.3)}
+.meal-opt{display:flex;align-items:center;gap:12px;padding:14px;background:var(--bg);border:1.5px solid var(--border);border-radius:16px;cursor:pointer;margin-bottom:8px;transition:all .3s ease}
+.meal-opt:hover{border-color:var(--fire);background:rgba(255,107,53,.05)}
+.meal-opt.sel{border-color:var(--fire);background:rgba(255,107,53,.12);box-shadow:0 0 20px rgba(255,107,53,.3)}
+.meal-opt input{margin:0;accent-color:var(--fire)}
+.pw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0}
+.pw-card{background:var(--card);border:2px solid var(--border);border-radius:var(--r);padding:20px 14px;text-align:center;cursor:pointer;position:relative;transition:all .3s ease}
+.pw-card:hover{border-color:var(--fire);transform:scale(1.05);box-shadow:0 0 30px rgba(255,107,53,.4)}
+.pw-card.hit{grid-column:1/-1;background:linear-gradient(135deg,rgba(255,107,53,.2),rgba(247,147,30,.15),rgba(255,204,0,.1))!important;border:2px solid var(--fire)!important;box-shadow:0 0 30px rgba(255,107,53,.6),0 0 60px rgba(247,147,30,.4)!important}
+.pw-card.hit::before{content:"🔥 HIT";position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--grad);color:#fff;padding:6px 18px;font-size:12px;font-weight:800;border-radius:12px;box-shadow:0 0 20px rgba(255,107,53,.8);pointer-events:none;z-index:0}
+.pw-n{font-weight:700;margin-bottom:10px;font-size:14px;color:var(--text2)}
+.pw-c{font-size:28px;font-weight:900;color:#fff;margin:6px 0}
+.pw-o{font-size:13px;color:var(--text3);text-decoration:line-through;margin-bottom:10px}
+.pw-s{background:rgba(239,68,68,.15);color:var(--err);padding:5px 14px;border-radius:12px;font-size:11px;font-weight:700;display:inline-block;margin-bottom:14px}
+.pw-days{font-size:12px;color:var(--fire);margin-top:8px;font-weight:600}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:2000;padding:20px}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:32px 28px;max-width:500px;width:100%;position:relative;box-shadow:0 0 50px rgba(255,107,53,.3);z-index:2001;max-height:90vh;overflow-y:auto}
+.modal-x{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--bg2);border:1px solid var(--border);cursor:pointer;color:var(--text2);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .3s ease}
+.modal-x:hover{background:var(--fire);color:#fff;transform:rotate(90deg)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:linear-gradient(135deg,var(--card),rgba(255,107,53,.1));border:1px solid var(--fire);border-radius:16px;padding:14px 24px;z-index:3000;transition:all .3s ease;max-width:90%;display:flex;align-items:center;gap:12px;box-shadow:0 0 30px rgba(255,107,53,.4)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.header{display:flex;align-items:center;justify-content:space-between;padding:12px 0;margin-bottom:16px}
+.user-pill{display:flex;align-items:center;gap:10px;background:var(--bg2);padding:6px 14px 6px 6px;border-radius:20px;border:1px solid var(--border);cursor:pointer;transition:all .3s ease}
+.user-pill:hover{border-color:var(--fire);box-shadow:0 0 20px rgba(255,107,53,.3)}
+.user-av{width:28px;height:28px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;overflow:hidden}
+.user-av img{width:100%;height:100%;object-fit:cover}
+.metrics-container{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:20px 0}
+.metric-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px;text-align:center}
+.metric-bar{height:40px;background:var(--grad);border-radius:10px;margin-bottom:10px;display:flex;align-items:center;justify-content:center}
+.metric-value{font-size:24px;font-weight:900;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+.metric-label{font-size:13px;color:var(--text2);margin-top:4px}
+.calorie-banner{background:linear-gradient(135deg,rgba(255,107,53,.15),rgba(247,147,30,.1));border:2px solid var(--fire);border-radius:var(--r);padding:24px;text-align:center;margin-bottom:20px}
+.calorie-banner .label{font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.calorie-banner .value{font-size:48px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.2}
+.calorie-banner .sub{font-size:14px;color:var(--text2);margin-top:8px}
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
+.ach{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px;text-align:center;position:relative;transition:all .3s ease}
+.ach.on{border-color:var(--fire);box-shadow:0 0 20px rgba(255,107,53,.5)}
+.ach.off{opacity:.5;filter:grayscale(.7)}
+.ach-i{font-size:32px;margin-bottom:8px;display:block}
+.ach-t{font-weight:700;font-size:13px;margin-bottom:4px}
+.ach-d{font-size:11px;color:var(--text3)}
+.ach.on::after{content:"✓";position:absolute;top:8px;right:8px;background:var(--fire);color:#fff;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.water-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin-top:12px}
+.wg{aspect-ratio:1;background:var(--bg2);border:2px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;transition:all .3s ease}
+.wg:hover{border-color:var(--c);transform:scale(1.1)}
+.wg.on{background:linear-gradient(135deg,rgba(34,211,238,.3),rgba(59,130,246,.3));border-color:var(--c);box-shadow:0 0 15px rgba(34,211,238,.5)}
+.wg.on::after{content:"💧"}
+.cal-grid{display:grid;grid-template-columns:repeat(15,1fr);gap:4px;margin-top:12px}
+.cd{aspect-ratio:1;background:var(--bg2);border-radius:4px;border:1px solid var(--border);transition:all .3s ease}
+.cd:hover{transform:scale(1.2)}
+.cd.on{background:var(--ok);border-color:var(--ok)}
+.cd.today{border-color:var(--fire);border-width:2px}
+.wo-pos-box{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px}
+.wo-pos-title{font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.wo-pos-title.start{color:var(--ok)}
+.wo-pos-title.end{color:var(--fire)}
+.wo-pos-text{font-size:14px;line-height:1.6;color:var(--text2)}
+.yt-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.3);border-radius:12px;font-size:13px;font-weight:600;text-decoration:none;margin-top:8px;transition:all .3s ease}
+.yt-btn:hover{background:rgba(239,68,68,.2);transform:scale(1.05)}
+.profile-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px;display:flex;align-items:center;gap:16px}
+.profile-avatar{width:80px;height:80px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;color:#fff;flex-shrink:0;overflow:hidden;position:relative}
+.profile-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.avatar-upload{position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;cursor:pointer}
+.profile-avatar:hover .avatar-upload{opacity:1}
+.avatar-upload input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.profile-info{flex:1}
+.profile-name{font-size:18px;font-weight:700;margin-bottom:4px}
+.profile-email{font-size:13px;color:var(--text3)}
+.profile-achievements{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.profile-ach{width:28px;height:28px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:14px}
+.edit-form{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+.edit-form.active{display:block}
+.workout-mode{position:fixed;inset:0;background:var(--bg);z-index:5000;overflow-y:auto}
+.workout-header{background:var(--card);border-bottom:1px solid var(--border);padding:16px 20px;position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between}
+.workout-title{font-size:18px;font-weight:700}
+.workout-body{max-width:600px;margin:0 auto;padding:20px}
+.workout-progress{margin-bottom:20px}
+.workout-progress-text{display:flex;justify-content:space-between;font-size:13px;color:var(--text2);margin-bottom:8px}
+.workout-exercise-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:24px;margin-bottom:20px}
+.workout-exercise-name{font-size:24px;font-weight:800;margin-bottom:8px;text-align:center}
+.workout-exercise-muscle{text-align:center;color:var(--text2);margin-bottom:20px}
+.workout-exercise-params{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+.workout-param{background:var(--bg2);padding:10px 16px;border-radius:12px;border:1px solid var(--border);min-width:80px;text-align:center}
+.workout-param-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em}
+.workout-param-value{font-size:18px;font-weight:700;color:var(--fire);margin-top:2px}
+.rest-timer{position:relative;width:220px;height:220px;margin:24px auto}
+.rest-timer svg{transform:rotate(-90deg);width:100%;height:100%}
+.rest-timer-bg{fill:none;stroke:var(--border);stroke-width:10}
+.rest-timer-fg{fill:none;stroke:var(--grad);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s linear}
+.rest-timer-value{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.rest-timer-num{font-size:48px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.rest-timer-label{font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
+.rest-info-display{background:rgba(255,107,53,.1);border:1px solid var(--fire);border-radius:12px;padding:10px 16px;text-align:center;margin-bottom:16px}
+.rest-info-display .label{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.05em}
+.rest-info-display .value{font-size:16px;font-weight:700;color:var(--fire)}
+.workout-actions{display:grid;gap:10px;margin-top:20px}
+.workout-actions .btn{font-size:15px;padding:16px 20px}
+.workout-complete{text-align:center;padding:40px 20px}
+.workout-complete-icon{font-size:72px;margin-bottom:16px}
+.workout-complete-title{font-size:28px;font-weight:900;margin-bottom:8px}
+.workout-complete-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}
+.workout-stat{background:var(--bg2);padding:14px;border-radius:12px;border:1px solid var(--border)}
+.workout-stat-value{font-size:22px;font-weight:800;color:var(--fire)}
+.workout-stat-label{font-size:11px;color:var(--text2);margin-top:2px}
+.level-bar{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:16px}
+.level-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.level-badge{display:flex;align-items:center;gap:8px}
+.level-icon{width:40px;height:40px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;box-shadow:0 0 15px rgba(255,107,53,.5)}
+.level-info{flex:1}
+.level-name{font-weight:700;font-size:14px}
+.level-xp{font-size:11px;color:var(--text3)}
+.xp-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin-top:8px}
+.xp-bar-fill{height:100%;background:var(--grad);border-radius:4px;transition:width .5s ease}
+.coins-display{display:flex;align-items:center;gap:8px;padding:8px 14px;background:linear-gradient(135deg,rgba(251,191,36,.15),rgba(245,158,11,.1));border:1px solid rgba(251,191,36,.3);border-radius:12px;font-weight:700;color:var(--gold)}
+.coins-icon{font-size:18px}
+.coach-card{background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(34,211,238,.05));border:1px solid rgba(139,92,246,.3);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.coach-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.coach-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--v),var(--c));display:flex;align-items:center;justify-content:center;font-size:22px}
+.coach-name{font-weight:700;font-size:15px}
+.coach-subtitle{font-size:11px;color:var(--text3)}
+.coach-tip{font-size:14px;line-height:1.6;color:var(--text2)}
+.music-player{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.music-controls{display:flex;align-items:center;gap:12px;margin-top:16px}
+.music-btn{width:48px;height:48px;border-radius:50%;background:var(--grad);border:none;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s ease}
+.music-btn:hover{transform:scale(1.1);box-shadow:0 0 20px rgba(255,107,53,.5)}
+.music-progress{flex:1;height:6px;background:var(--border);border-radius:3px;cursor:pointer;position:relative}
+.music-progress-fill{height:100%;background:var(--grad);border-radius:3px;width:0%;transition:width .1s linear}
+.music-time{font-size:12px;color:var(--text3);min-width:40px;text-align:center}
+.track-list{margin-top:16px;max-height:300px;overflow-y:auto}
+.track-item{display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all .3s ease}
+.track-item:hover{border-color:var(--fire);background:rgba(255,107,53,.05)}
+.track-item.active{border-color:var(--fire);background:rgba(255,107,53,.1);box-shadow:0 0 15px rgba(255,107,53,.3)}
+.track-icon{width:36px;height:36px;border-radius:8px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:18px}
+.track-info{flex:1;min-width:0}
+.track-name{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track-duration{font-size:12px;color:var(--text3)}
+.track-delete{width:32px;height:32px;border-radius:8px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--err);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s ease}
+.track-delete:hover{background:rgba(239,68,68,.2)}
+.file-upload{position:relative;overflow:hidden;display:inline-block;width:100%}
+.file-upload input[type=file]{position:absolute;left:0;top:0;opacity:0;width:100%;height:100%;cursor:pointer}
+.mini-player{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:12px;z-index:4000;backdrop-filter:blur(10px)}
+.mini-player.hidden{display:none}
+.mini-track-info{flex:1;min-width:0}
+.mini-track-name{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-track-artist{font-size:12px;color:var(--text3)}
+.mini-progress{height:3px;background:var(--border);border-radius:2px;margin-top:8px;cursor:pointer}
+.mini-progress-fill{height:100%;background:var(--grad);border-radius:2px;width:0%}
+.reward-item{display:flex;align-items:center;gap:12px;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;transition:all .3s ease}
+.reward-item:hover{border-color:var(--gold);box-shadow:0 0 15px rgba(251,191,36,.2)}
+.reward-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,rgba(251,191,36,.2),rgba(245,158,11,.1));display:flex;align-items:center;justify-content:center;font-size:22px}
+.reward-info{flex:1}
+.reward-name{font-weight:600;font-size:14px}
+.reward-desc{font-size:11px;color:var(--text3)}
+.time-slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.time-slot{padding:10px;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;text-align:center;cursor:pointer;font-size:13px;font-weight:600;transition:all .3s ease}
+.time-slot:hover{border-color:var(--fire);background:rgba(255,107,53,.05)}
+.time-slot.sel{background:rgba(255,107,53,.15);border-color:var(--fire);color:var(--fire);box-shadow:0 0 10px rgba(255,107,53,.3)}
+.leaderboard-item{display:flex;align-items:center;gap:12px;padding:10px;border-bottom:1px solid var(--border)}
+.leaderboard-item:last-child{border-bottom:none}
+.leaderboard-rank{width:30px;font-weight:800;color:var(--fire)}
+.leaderboard-avatar{width:32px;height:32px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+.leaderboard-info{flex:1}
+.leaderboard-name{font-size:13px;font-weight:600}
+.leaderboard-streak{font-size:12px;color:var(--fire);font-weight:700}
+.leaderboard-achievements{display:flex;gap:4px;margin-top:4px}
+.leaderboard-ach{width:20px;height:20px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:10px}
+.history-item{display:flex;align-items:center;gap:12px;padding:10px;border-bottom:1px solid var(--border);font-size:13px}
+.history-item:last-child{border-bottom:none}
+.history-date{font-size:11px;color:var(--text3);width:60px}
+.history-info{flex:1}
+.history-focus{font-weight:600;font-size:12px}
+.reminder-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.reminder-icon{font-size:24px}
+.reminder-info{flex:1}
+.reminder-title{font-size:14px;font-weight:600;margin-bottom:4px}
+.reminder-desc{font-size:12px;color:var(--text2)}
+.reminder-toggle{width:48px;height:26px;background:var(--border);border-radius:13px;position:relative;cursor:pointer;transition:background .3s ease;flex-shrink:0}
+.reminder-toggle.on{background:var(--fire)}
+.reminder-toggle::after{content:'';position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .3s ease}
+.reminder-toggle.on::after{left:25px}
+.theme-toggle{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all .3s ease}
+.theme-toggle:hover{border-color:var(--fire)}
+.theme-toggle-icon{font-size:20px}
+.theme-toggle-label{font-size:14px;font-weight:600}
+@media(max-width:1024px){.main-layout{grid-template-columns:1fr}.sidebar{display:none}}
+@media(max-width:768px){.app{padding:12px}.card{padding:18px;border-radius:var(--r)}.pw-grid{grid-template-columns:1fr}.cal-grid{grid-template-columns:repeat(10,1fr)}.water-grid{grid-template-columns:repeat(4,1fr)}.ach-grid{grid-template-columns:repeat(2,1fr)}.metrics-container{grid-template-columns:1fr}.workout-complete-stats{grid-template-columns:1fr}.rest-timer{width:180px;height:180px}.rest-timer-num{font-size:40px}.time-slots{grid-template-columns:repeat(3,1fr)}}
+@media print{.fire-particles,.header,.tabs,.btn,.day-actions,.sidebar,.mini-player{display:none!important}.app{max-width:100%;padding:0}.card{break-inside:avoid;border:1px solid #ccc;margin-bottom:12px;padding:16px}body{background:#fff;color:#000}.grad{background:none;-webkit-text-fill-color:initial;color:#ff6b35}}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<div id="modal"></div>
+<div id="toast"></div>
+<div id="workout-mode"></div>
+<audio id="global-audio" preload="auto"></audio>
+
+<script>
+(function(){
+  const c=document.getElementById('particles');
+  if(!c)return;
+  for(let i=0;i<30;i++){
+    const p=document.createElement('div');
+    p.style.cssText='position:absolute;width:4px;height:4px;background:radial-gradient(circle,#ffcc00,#f7931e,transparent);border-radius:50%;animation:rise '+(3+Math.random()*2)+'s linear infinite;opacity:0;left:'+Math.random()*100+'%;animation-delay:'+Math.random()*4+'s';
+    c.appendChild(p);
+  }
+  const style=document.createElement('style');
+  style.textContent='@keyframes rise{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:.8}90%{opacity:.6}100%{transform:translateY(-100px) scale(1.5);opacity:0}}';
+  document.head.appendChild(style);
+  c.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden';
+})();
+
+const SK='fitpro_data';
+const TRIAL=7*24*60*60*1000;
+const DAY_MS=24*60*60*1000;
+const DAY_NAMES=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+
+const COACH_TIPS={
+  morning:["Доброе утро! 💪 Твоё тело отдохнуло и готово к нагрузкам.","Утренняя тренировка ускоряет метаболизм на весь день!","Стакан воды сразу после пробуждения запускает обмен веществ."],
+  afternoon:["Отличное время для силовой тренировки!","После обеда уровень энергии на пике!","Середина дня — лучшее время для рекордов!"],
+  evening:["Вечерняя тренировка снимает стресс!","После тренировки не ешь 1-2 часа.","Отличная работа! После тренировки сделай 5 минут растяжки."],
+  workout_done:["Отличная тренировка! 🎯 Ты стал сильнее!","Супер! Каждая тренировка делает тебя лучше!","Браво! Завершённая тренировка = +50 XP и +50 FitCoins!"],
+  rest_day:["День отдыха — это тоже тренировка!","Сегодня отдыхай! Лёгкая прогулка 20-30 минут улучшит кровообращение.","День восстановления — выпей больше воды и выспись."],
+  motivation:["Ты уже сделал больше, чем 80% людей, которые только планируют начать!","Каждый день без тренировки — это упущенная возможность!","Дисциплина — это делать то, что нужно, даже когда не хочется!"]
+};
+
+function getCoachTip(context){const tips=COACH_TIPS[context]||COACH_TIPS.motivation;return tips[Math.floor(Math.random()*tips.length)]}
+
+const LEVELS=[
+  {level:1,name:'Новичок',xp:0,icon:'🌱'},
+  {level:2,name:'Спортсмен',xp:200,icon:'💪'},
+  {level:3,name:'Атлет',xp:500,icon:'⚡'},
+  {level:4,name:'Воин',xp:1000,icon:'⚔️'},
+  {level:5,name:'Чемпион',xp:2000,icon:'🏆'},
+  {level:6,name:'Мастер',xp:3500,icon:'👑'},
+  {level:7,name:'Легенда',xp:5500,icon:'⭐'},
+  {level:8,name:'Титан',xp:8000,icon:'🔱'},
+  {level:9,name:'Бог фитнеса',xp:12000,icon:'🌟'},
+  {level:10,name:'Бессмертный',xp:20000,icon:'💎'}
+];
+
+function getLevelInfo(xp){
+  let current=LEVELS[0];let next=LEVELS[1];
+  for(let i=0;i<LEVELS.length-1;i++){
+    if(xp>=LEVELS[i].xp&&xp<LEVELS[i+1].xp){current=LEVELS[i];next=LEVELS[i+1];break}
+    if(i===LEVELS.length-2&&xp>=LEVELS[i+1].xp){current=LEVELS[i+1];next={level:current.level+1,name:'Максимум',xp:Infinity,icon:'💎'}}
+  }
+  const xpInLevel=xp-current.xp;const xpNeeded=next.xp-current.xp;
+  const progress=Math.min(100,(xpInLevel/xpNeeded)*100);
+  return{current,next,xpInLevel,xpNeeded,progress};
+}
+
+const ACH=[
+  {id:'first',i:'🎯',t:'Первый шаг',d:'Завершите первую тренировку',xp:50,coins:50,c:u=>(u.totalWorkouts||0)>=1},
+  {id:'w5',i:'💪',t:'Разминка',d:'5 тренировок',xp:100,coins:100,c:u=>(u.totalWorkouts||0)>=5},
+  {id:'w10',i:'🔥',t:'Десяточка',d:'10 тренировок',xp:200,coins:200,c:u=>(u.totalWorkouts||0)>=10},
+  {id:'w25',i:'⚡',t:'Четвертак',d:'25 тренировок',xp:500,coins:500,c:u=>(u.totalWorkouts||0)>=25},
+  {id:'w50',i:'🏆',t:'Полтинник',d:'50 тренировок',xp:1000,coins:1000,c:u=>(u.totalWorkouts||0)>=50},
+  {id:'w100',i:'👑',t:'Сотня',d:'100 тренировок',xp:2000,coins:2000,c:u=>(u.totalWorkouts||0)>=100},
+  {id:'s3',i:'🔥',t:'На ходу',d:'Серия 3 дня подряд',xp:150,coins:150,c:u=>(u.streak||0)>=3},
+  {id:'s7',i:'⚡',t:'Неделя силы',d:'Серия 7 дней подряд',xp:300,coins:300,c:u=>(u.streak||0)>=7},
+  {id:'s14',i:'💪',t:'Две недели',d:'Серия 14 дней подряд',xp:500,coins:500,c:u=>(u.streak||0)>=14},
+  {id:'s30',i:'🏆',t:'Месяц дисциплины',d:'Серия 30 дней подряд',xp:1000,coins:1000,c:u=>(u.streak||0)>=30},
+  {id:'s100',i:'🔥',t:'Сотня огоньков',d:'Серия 100 дней подряд',xp:3000,coins:3000,c:u=>(u.streak||0)>=100},
+  {id:'tractor',i:'🚜',t:'Тракторист',d:'Серия 300 дней подряд',xp:5000,coins:5000,c:u=>(u.streak||0)>=300},
+  {id:'s500',i:'🌟',t:'Легенда серии',d:'Серия 500 дней подряд',xp:8000,coins:8000,c:u=>(u.streak||0)>=500},
+  {id:'s1000',i:'💎',t:'Бессмертный',d:'Серия 1000 дней подряд',xp:15000,coins:15000,c:u=>(u.streak||0)>=1000},
+  {id:'water1',i:'💧',t:'Первый глоток',d:'Выпейте 8 стаканов за день',xp:30,coins:30,c:u=>(u.waterToday||0)>=8},
+  {id:'water7',i:'🌊',t:'Водный баланс',d:'7 дней подряд по 8 стаканов',xp:300,coins:300,c:u=>(u.waterStreak||0)>=7},
+  {id:'active7',i:'📅',t:'Неделя активности',d:'7 активных дней',xp:200,coins:200,c:u=>(u.workoutHistory||[]).length>=7},
+  {id:'active14',i:'📅',t:'Две недели активности',d:'14 активных дней',xp:400,coins:400,c:u=>(u.workoutHistory||[]).length>=14},
+  {id:'active30',i:'📅',t:'Месяц активности',d:'30 активных дней',xp:800,coins:800,c:u=>(u.workoutHistory||[]).length>=30},
+  {id:'sub',i:'⭐',t:'Премиум',d:'Оформите подписку',xp:100,coins:100,c:u=>!!u.subscription},
+  {id:'lifetime',i:'💎',t:'Навсегда с нами',d:'Тариф "Навсегда"',xp:500,coins:500,c:u=>u.subscription?.plan==='lifetime'},
+  {id:'coins500',i:'💰',t:'Копилка',d:'Накопите 500 FitCoins',xp:100,coins:0,c:u=>(u.fitCoins||0)>=500},
+  {id:'coins1000',i:'🏦',t:'Банкир',d:'Накопите 1000 FitCoins',xp:200,coins:0,c:u=>(u.fitCoins||0)>=1000},
+  {id:'level5',i:'🏅',t:'Чемпион',d:'Достигните 5 уровня',xp:300,coins:300,c:u=>getLevelInfo(u.xp||0).current.level>=5},
+  {id:'early_bird',i:'🌅',t:'Ранняя пташка',d:'Тренировка до 8:00',xp:100,coins:100,c:u=>(u.earlyWorkouts||0)>=1},
+  {id:'night_owl',i:'🦉',t:'Ночная сова',d:'Тренировка после 21:00',xp:100,coins:100,c:u=>(u.lateWorkouts||0)>=1},
+  {id:'perfect_week',i:'🌟',t:'Идеальная неделя',d:'7 тренировок за 7 дней',xp:500,coins:500,c:u=>{const h=u.workoutHistory||[];const weekAgo=Date.now()-7*DAY_MS;return h.filter(x=>x.date>=weekAgo).length>=7}},
+  {id:'hydration_master',i:'💦',t:'Мастер гидратации',d:'30 дней с 8+ стаканов',xp:500,coins:500,c:u=>(u.waterStreak||0)>=30}
+];
+
+const REWARDS=[
+  {id:'discount20',icon:'🏷️',name:'Скидка 20%',desc:'Скидка на следующий месяц подписки',cost:500},
+  {id:'badge_gold',icon:'🏅',name:'Золотой значок',desc:'Эксклюзивный значок профиля',cost:300},
+  {id:'badge_fire',icon:'🔥',name:'Огненный значок',desc:'Покажите всем свою мощь!',cost:400},
+  {id:'free_week',icon:'🎁',name:'Бесплатная неделя',desc:'+7 дней к подписке',cost:800},
+  {id:'free_month',icon:'🎉',name:'Бесплатный месяц',desc:'+30 дней к подписке',cost:3000},
+  {id:'merch_shirt',icon:'👕',name:'Футболка FitPro',desc:'Фирменная футболка с доставкой',cost:5000},
+  {id:'merch_shaker',icon:'🥤',name:'Шейкер FitPro',desc:'Фирменный шейкер 750мл',cost:2000}
+];
+
+const CARDIO=[
+  {n:"Прыжки на скакалке",e:"🪢",t:"Держите спину прямо, прыгайте невысоко.",y:"скакалка техника",startPos:"Стопы вместе, спина прямая.",endPos:"Легкий прыжок на носках.",weight:'light'},
+  {n:"Jumping Jacks",e:"⭐",t:"Прыжок — руки и ноги врозь.",y:"jumping jacks техника",startPos:"Стопы вместе, руки вдоль тела.",endPos:"Ноги широко, руки подняты.",weight:'light'},
+  {n:"Бёрпи",e:"💥",t:"Присед → упор лёжа → прыжок.",y:"burpee техника",startPos:"Стоя прямо, ноги на ширине плеч.",endPos:"Прыжок вверх, руки над головой.",weight:'medium'},
+  {n:"Скалолаз",e:"🧗",t:"В упоре лёжа подтягивайте колени.",y:"mountain climber техника",startPos:"Упор лёжа на прямых руках.",endPos:"Колено подтянуто к груди.",weight:'light'},
+  {n:"Высокие колени",e:"🏃",t:"Бег на месте с высоким подъёмом.",y:"high knees техника",startPos:"Стоя прямо, руки согнуты.",endPos:"Колени до уровня таза.",weight:'light'},
+  {n:"Бег на месте",e:"🏃‍♂️",t:"Имитация бега на месте.",y:"running in place",startPos:"Стоя прямо.",endPos:"Активный бег на месте.",weight:'light'}
+];
+
+const HOME=[
+  {n:'Отжимания',s:3,r:'10-15',m:'Грудь, трицепс',e:'💪',startPos:'Упор лёжа. Руки чуть шире плеч.',endPos:'Локти согнуты под 45°.',y:'отжимания техника',weight:'medium'},
+  {n:'Приседания',s:4,r:'15-20',m:'Ноги, ягодицы',e:'🦵',startPos:'Стопы на ширине плеч.',endPos:'Бёдра параллельны полу.',y:'приседания техника',weight:'medium'},
+  {n:'Планка',s:3,r:'40 сек',m:'Пресс',e:'🧘',startPos:'Упор на предплечья и носки.',endPos:'Тело прямое, пресс напряжён.',y:'планка техника',weight:'light'},
+  {n:'Выпады',s:3,r:'12/нога',m:'Ноги',e:'🦵',startPos:'Стоя прямо, шаг вперёд.',endPos:'Оба колена под 90°.',y:'выпады техника',weight:'medium'},
+  {n:'Ягодичный мостик',s:3,r:'15-20',m:'Ягодицы',e:'🍑',startPos:'Лёжа на спине, стопы у ягодиц.',endPos:'Таз поднят, прямая линия.',y:'ягодичный мостик техника',weight:'light'},
+  {n:'Скручивания',s:3,r:'15-20',m:'Пресс',e:'🔥',startPos:'Лёжа, колени согнуты, руки за головой.',endPos:'Лопатки оторваны от пола.',y:'скручивания техника',weight:'light'}
+];
+
+const GYM=[
+  {n:'Жим штанги лёжа',s:4,r:'8-10',m:'Грудь',e:'🏋️',startPos:'Лопатки сведены, гриф над грудью.',endPos:'Гриф касается груди.',y:'жим лёжа техника',weight:'heavy'},
+  {n:'Становая тяга',s:3,r:'6-8',m:'Спина, ноги',e:'🏋️',startPos:'Стопы под грифом, спина прямая.',endPos:'Полное выпрямление.',y:'становая тяга',weight:'heavy'},
+  {n:'Приседания со штангой',s:4,r:'8-10',m:'Ноги',e:'🏋️',startPos:'Штанга на трапециях.',endPos:'Опускание до параллели.',y:'приседания со штангой',weight:'heavy'},
+  {n:'Тяга верхнего блока',s:3,r:'10-12',m:'Спина',e:'🏋️',startPos:'Сидя, хват широкий.',endPos:'Рукоять у верхней части груди.',y:'тяга верхнего блока',weight:'medium'},
+  {n:'Жим гантелей сидя',s:3,r:'10-12',m:'Плечи',e:'🏋️',startPos:'Сидя, гантели у плеч.',endPos:'Гантели над головой.',y:'жим гантелей сидя',weight:'medium'},
+  {n:'Трицепс на блоке',s:3,r:'12-15',m:'Трицепс',e:'💪',startPos:'Стоя у блока, локти прижаты.',endPos:'Руки выпрямлены вниз.',y:'трицепс на блоке',weight:'light'}
+];
+
+const MEALS={
+  breakfast:[
+    {id:'b1',name:'Овсянка с ягодами',g:'60г овсянки + 150мл молока + 80г ягод',kcal:320,p:14,f:8,c:48},
+    {id:'b2',name:'Омлет с овощами',g:'3 яйца + 120г овощей + 10г масла',kcal:340,p:22,f:26,c:10},
+    {id:'b3',name:'Творог с мёдом',g:'150г творога + 15г мёда + 20г орехов',kcal:360,p:26,f:18,c:28},
+    {id:'b4',name:'Гречка с яйцом',g:'70г гречки + 1 яйцо + 100г огурца',kcal:310,p:16,f:10,c:42}
+  ],
+  lunch:[
+    {id:'l1',name:'Курица с рисом',g:'140г курицы + 70г риса + 150г брокколи',kcal:450,p:42,f:8,c:52},
+    {id:'l2',name:'Рыба с картофелем',g:'150г трески + 120г картофеля + салат',kcal:420,p:35,f:12,c:45},
+    {id:'l3',name:'Индейка с гречкой',g:'140г индейки + 70г гречки + 100г овощей',kcal:440,p:40,f:10,c:50},
+    {id:'l4',name:'Говядина с булгуром',g:'130г говядины + 70г булгура + перец',kcal:480,p:38,f:14,c:55}
+  ],
+  dinner:[
+    {id:'d1',name:'Курица с кабачками',g:'130г курицы + 200г кабачков',kcal:280,p:32,f:10,c:12},
+    {id:'d2',name:'Омлет со шпинатом',g:'2 яйца + 80г грибов + 100г шпината',kcal:260,p:20,f:18,c:8},
+    {id:'d3',name:'Творог с кефиром',g:'180г творога + 200мл кефира',kcal:220,p:30,f:2,c:18},
+    {id:'d4',name:'Рыба с фасолью',g:'140г минтая + 120г стручковой фасоли',kcal:240,p:30,f:6,c:16}
+  ],
+  snack:[
+    {id:'s1',name:'Яблоко с миндалём',g:'1 яблоко + 10 орехов миндаля',kcal:180,p:5,f:9,c:22},
+    {id:'s2',name:'Йогурт с ягодами',g:'150г йогурта + 60г ягод',kcal:140,p:14,f:4,c:16},
+    {id:'s3',name:'Тост с авокадо',g:'1 тост (30г) + 40г авокадо',kcal:190,p:6,f:12,c:18},
+    {id:'s4',name:'Яйца с огурцом',g:'2 яйца + 1 крупный огурец',kcal:160,p:14,f:10,c:4}
+  ]
+};
+
+function generateLeaderboard(){
+  const names=['Александр','Мария','Дмитрий','Анна','Сергей','Елена','Максим','Ольга','Андрей','Наталья','Иван','Екатерина','Павел','Юлия','Артём','Татьяна','Николай','Светлана','Владимир','Ирина','Михаил','Виктория','Роман','Валентина','Евгений','Людмила','Григорий','Галина','Борис','Надежда','Фёдор','Вера','Олег','Марина','Тимур','Ксения','Денис','Алиса','Кирилл','Полина','Алексей','Диана','Виталий','Карина','Игорь','София','Станислав','Варвара','Леонид','Евгения','Руслан','Ангелина','Геннадий','Дарья','Анатолий','Арина','Валерий','Василиса','Степан','Злата','Аркадий','Вероника','Константин','Милана','Юрий','Агата','Филипп','Эмилия','Георгий','Алина','Пётр','Кристина','Захар','Елизавета','Макар','Анастасия','Ярослав','Ульяна','Егор','Таисия','Даниил','Аделина','Матвей','Василиса','Тихон','Серафима','Марк','Милана','Платон','Агата','Лев','Злата','Демид','Варвара','Герман','Вероника','Роберт','Амелия','Эмиль','София','Ричард','Эвелина'];
+  const lb=[];
+  for(let i=0;i<100;i++){
+    const botAchievements=[];
+    for(let j=0;j<5;j++){
+      const achIdx=Math.floor(Math.random()*ACH.length);
+      if(!botAchievements.find(a=>a.id===ACH[achIdx].id)){
+        botAchievements.push(ACH[achIdx]);
+      }
+    }
+    lb.push({
+      name:names[i%names.length],
+      streak:Math.floor(Math.random()*100)+1,
+      achievements:botAchievements
+    });
+  }
+  return lb.sort((a,b)=>b.streak-a.streak);
+}
+
+let S={view:'welcome',step:0,ans:{},user:null,tab:'workout',editingProfile:false,editingMetrics:false};
+let workoutState=null;
+let workoutTimer=null;
+let reminderIntervals={};
+let audioPlayer=document.getElementById('global-audio');
+let currentTrackIndex=-1;
+let isPlaying=false;
+
+function load(){try{const r=localStorage.getItem(SK);if(r)S.user=JSON.parse(r)}catch(e){}}
+function save(){if(S.user)localStorage.setItem(SK,JSON.stringify(S.user))}
+function reset(){if(!confirm('Сбросить все данные?'))return;localStorage.removeItem(SK);S={view:'welcome',step:0,ans:{},user:null,tab:'workout'};go()}
+
+function updateStreak(){
+  if(!S.user)return;
+  const today=new Date().toDateString();
+  const last=S.user.lastWorkoutDate?new Date(S.user.lastWorkoutDate).toDateString():null;
+  if(!S.user.workoutHistory)S.user.workoutHistory=[];
+  if(!S.user.workoutHistory.find(h=>new Date(h.date).toDateString()===today)){
+    const hour=new Date().getHours();
+    S.user.workoutHistory.push({date:Date.now(),focus:'Тренировка',exercises:[]});
+    if(S.user.workoutHistory.length>30)S.user.workoutHistory=S.user.workoutHistory.slice(-30);
+    if(hour<8){S.user.earlyWorkouts=(S.user.earlyWorkouts||0)+1}
+    if(hour>=21){S.user.lateWorkouts=(S.user.lateWorkouts||0)+1}
+  }
+  if(last!==today){
+    if(last){const diff=Math.floor((new Date(today)-new Date(last))/DAY_MS);S.user.streak=(diff===1)?(S.user.streak||0)+1:1}
+    else S.user.streak=1;
+    S.user.lastWorkoutDate=today;
+  }
+  S.user.totalWorkouts=(S.user.totalWorkouts||0)+1;
+  addXP(50);
+  addCoins(50);
+  save();
+}
+
+function addXP(amount){
+  if(!S.user)return;
+  const oldLevel=getLevelInfo(S.user.xp||0).current.level;
+  S.user.xp=(S.user.xp||0)+amount;
+  const newLevel=getLevelInfo(S.user.xp).current.level;
+  if(newLevel>oldLevel){
+    setTimeout(()=>{
+      showAch({i:'🎉',t:'Новый уровень!',d:'Вы достигли уровня '+newLevel+'!'});
+      addCoins(100*newLevel);
+    },1000);
+  }
+}
+
+function addCoins(amount){
+  if(!S.user)return;
+  S.user.fitCoins=(S.user.fitCoins||0)+amount;
+  save();
+}
+
+function checkAch(){
+  if(!S.user)return[];
+  const unlocked=[];const prev=S.user.achievements||[];
+  ACH.forEach(a=>{if(a.c(S.user)&&!prev.includes(a.id)){unlocked.push(a);addXP(a.xp);addCoins(a.coins)}});
+  if(unlocked.length>0){S.user.achievements=[...prev,...unlocked.map(a=>a.id)];save()}
+  return unlocked;
+}
+
+function getTrainingSchedule(d){return{3:[1,0,1,0,1,0,0],4:[1,0,1,0,1,0,1],5:[1,1,0,1,1,0,1],6:[1,1,1,1,1,1,0]}[d]||[1,0,1,0,1,0,0]}
+function getVisibleDays(u){
+  const ts=u.trialStart||Date.now();const now=Date.now();
+  const ds=Math.floor((now-ts)/DAY_MS);let fd=Math.max(0,7-ds);let sd=0;
+  if(u.subscription){const sub=u.subscription;const sl=Math.max(0,Math.ceil((sub.unlockDate-now)/DAY_MS));if(sub.plan==='lifetime')return 30;if(sub.plan==='week')sd=sl;else return Math.min(30,sl)}
+  return Math.min(30,fd+sd);
+}
+function getSubscriptionInfo(u){
+  const ts=u.trialStart||Date.now();const now=Date.now();
+  const ds=Math.floor((now-ts)/DAY_MS);const fl=Math.max(0,7-ds);
+  let info={free:fl,paid:0,total:fl,type:'free',isLifetime:false};
+  if(u.subscription){const sub=u.subscription;const sl=Math.max(0,Math.ceil((sub.unlockDate-now)/DAY_MS));
+    if(sub.plan==='lifetime'){info.paid=30;info.total=30;info.type='lifetime';info.isLifetime=true}
+    else if(sub.plan==='week'){info.paid=sl;info.total=fl+sl;info.type='week'}
+    else if(sub.plan==='month'){info.paid=Math.min(30,sl);info.total=Math.min(30,sl);info.type='month'}
+    else if(sub.plan==='year'){info.paid=Math.min(30,sl);info.total=Math.min(30,sl);info.type='year'}}
+  return info;
+}
+function getRestTime(w){if(w==='heavy')return 180;if(w==='light')return 170;return 150}
+function formatTime(s){const m=Math.floor(s/60);const sec=s%60;return m+':'+sec.toString().padStart(2,'0')}
+
+const QS=[
+  {k:'gender',t:'Ваш пол?',type:'r',o:[{v:'male',e:'👨',t:'Мужской'},{v:'female',e:'👩',t:'Женский'}]},
+  {k:'age',t:'Ваш возраст?',type:'n',min:16,max:80,p:'Введите возраст'},
+  {k:'cw',t:'Текущий вес, кг?',type:'n',min:30,max:250,p:'Например: 75'},
+  {k:'tw',t:'Желаемый вес, кг?',type:'n',min:30,max:200,p:'Например: 68',h:'Должен отличаться не более чем на 50 кг'},
+  {k:'height',t:'Рост, см?',type:'n',min:120,max:230,p:'Например: 175'},
+  {k:'goal',t:'🔥 Главная цель',type:'r',o:[{v:'cut',e:'🔥',t:'Похудеть / Рельеф'},{v:'gain',e:'💪',t:'Набрать массу'},{v:'tone',e:'❤️',t:'Поддерживать тонус'}]},
+  {k:'body',t:'Тип телосложения?',type:'r',o:[{v:'ecto',e:'🦴',t:'Худощавый'},{v:'meso',e:'⚖️',t:'Средний'},{v:'endo',e:'🪨',t:'Крепкий'}]},
+  {k:'health',t:'Ограничения по здоровью?',type:'r',o:[{v:'none',e:'✅',t:'Нет'},{v:'joints',e:'🦵',t:'Суставы/спина'},{v:'heart',e:'❤️',t:'Давление/сердце'}]},
+  {k:'injury',t:'Травмы за последний месяц?',type:'r',o:[{v:'none',e:'✅',t:'Нет'},{v:'sprain',e:'🩹',t:'Растяжения'},{v:'fracture',e:'🏥',t:'Переломы'}]},
+  {k:'sleep',t:'Качество сна?',type:'r',o:[{v:'<6',e:'😴',t:'Менее 6 ч'},{v:'6-7',e:'🌙',t:'6–7 ч'},{v:'7-8',e:'😊',t:'7–8 ч'},{v:'>8',e:'🛌',t:'Больше 8 ч'}]},
+  {k:'act',t:'Повседневная активность?',type:'r',o:[{v:'sed',e:'🪑',t:'Сидячая'},{v:'light',e:'🚶',t:'Лёгкая'},{v:'mod',e:'🔄',t:'Средняя'},{v:'high',e:'🏗️',t:'Высокая'}]},
+  {k:'exp',t:'Опыт тренировок?',type:'r',o:[{v:'beg',e:'🌱',t:'Новичок'},{v:'mid',e:'🌿',t:'Средний'},{v:'adv',e:'🌳',t:'Опытный'}]},
+  {k:'int',t:'Интенсивность?',type:'r',o:[{v:'low',e:'🐢',t:'Лёгкая'},{v:'med',e:'🐇',t:'Средняя'},{v:'high',e:'🐆',t:'Высокая'}]},
+  {k:'loc',t:'Где тренироваться?',type:'r',o:[{v:'home',e:'🏠',t:'Дома'},{v:'gym',e:'🏋️',t:'В зале'},{v:'hyb',e:'🌳',t:'Гибрид'}]},
+  {k:'days',t:'Дней в неделю?',type:'r',o:[{v:'3',e:'3️⃣',t:'3 дня'},{v:'4',e:'4️⃣',t:'4 дня'},{v:'5',e:'5️⃣',t:'5 дней'},{v:'6',e:'6️⃣',t:'6 дней'}]}
+];
+
+function genDayWorkout(dayOffset,qd){
+  const a=qd||{};const pool=a.loc==='gym'?GYM:HOME;
+  const foc=['Грудь, трицепс','Спина, бицепс','Ноги, ягодицы','Плечи, пресс','Фулбоди','Кардио + Кор','Всё тело'];
+  const days=+a.days||3;const sched=getTrainingSchedule(days);
+  const diw=dayOffset%7;const isRest=!sched[diw];
+  if(isRest)return{rest:true,focus:'Отдых',exercises:[]};
+  const seed=dayOffset;const pr=(s,i)=>((s*9301+49297+i*233)%233280)/233280;
+  const ec={3:6,4:5,5:5,6:4}[days]||5;
+  let ex=[],used=new Set();
+  for(let i=0;i<ec;i++){let idx=Math.floor(pr(seed,i)*pool.length),att=0;while(used.has(idx)&&att<pool.length){idx=(idx+1)%pool.length;att++}used.add(idx);ex.push({...pool[idx],rest:getRestTime(pool[idx].weight)})}
+  if(a.int==='low')ex=ex.map(e=>({...e,rest:e.rest+30}));
+  if(a.int==='high')ex=ex.map(e=>({...e,r:e.r.replace('10-12','8-10').replace('12-15','10-12')}));
+  if(a.exp==='beg')ex=ex.map(e=>({...e,s:Math.max(2,e.s-1)}));
+  if(a.goal==='cut'||a.goal==='tone'){const ce=CARDIO[Math.floor(pr(seed,100)*CARDIO.length)];ex.push({n:ce.n,s:1,r:'15-20 мин',rest:getRestTime(ce.weight),m:'Кардио',isCardio:true,e:ce.e,t:ce.t,y:ce.y,startPos:ce.startPos,endPos:ce.endPos,weight:ce.weight})}
+  return{rest:false,focus:foc[diw%foc.length],exercises:ex};
+}
+
+function genMetrics(qd){
+  const a=qd||{};const w=+a.cw||70,h=+a.height||170,age=+a.age||30,g=a.gender||'male',goal=a.goal||'tone';
+  const bmr=Math.round(10*w+6.25*h-5*age+(g==='female'?-161:5));
+  const mult={sed:1.2,light:1.375,mod:1.55,high:1.725};
+  const tdee=Math.round(bmr*(mult[a.act]||1.2));
+  let gc='maintain',tc=tdee;
+  if(goal==='cut'){gc='lose';tc=Math.round(tdee*0.85)}
+  else if(goal==='gain'){gc='gain';tc=Math.round(tdee*1.125)}
+  const tw=gc==='lose'?w-10:gc==='gain'?w+5:w;
+  const p=Math.round(tw*(g==='female'?1.8:2.0)),f=Math.round(tw*0.9),c=Math.max(0,Math.round((tc-p*4-f*9)/4));
+  return{bmr,tdee,targetCalories:tc,goalCategory:gc,protein:p,fats:f,carbs:c};
+}
+
+function genMeals(qd){
+  const metrics=genMetrics(qd);
+  const pick=(arr,t)=>arr.reduce((b,c)=>Math.abs(c.kcal-t)<Math.abs(b.kcal-t)?c:b,arr[0]);
+  const tg={breakfast:Math.round(metrics.targetCalories*0.3),lunch:Math.round(metrics.targetCalories*0.4),dinner:Math.round(metrics.targetCalories*0.25),snack:Math.round(metrics.targetCalories*0.05)};
+  const result={
+    breakfast:{sel:{...pick(MEALS.breakfast,tg.breakfast),portion:100},opts:MEALS.breakfast.map(m=>({...m,portion:100}))},
+    lunch:{sel:{...pick(MEALS.lunch,tg.lunch),portion:100},opts:MEALS.lunch.map(m=>({...m,portion:100}))},
+    dinner:{sel:{...pick(MEALS.dinner,tg.dinner),portion:100},opts:MEALS.dinner.map(m=>({...m,portion:100}))},
+    snack:{sel:{...pick(MEALS.snack,tg.snack),portion:100},opts:MEALS.snack.map(m=>({...m,portion:100}))}
+  };
+  if(S.user&&S.user.mealsSelected){Object.keys(S.user.mealsSelected).forEach(cat=>{const mealId=S.user.mealsSelected[cat];const meal=MEALS[cat].find(m=>m.id===mealId);if(meal){result[cat].sel={...meal,portion:S.user.mealsPortions?.[cat]||100}}})}
+  return result;
+}
+
+function initMusicPlayer(){
+  if(!S.user)return;
+  if(!S.user.tracks)S.user.tracks=[];
+  audioPlayer.addEventListener('timeupdate',()=>{
+    if(audioPlayer.duration){
+      const progress=(audioPlayer.currentTime/audioPlayer.duration)*100;
+      document.querySelectorAll('.music-progress-fill,.mini-progress-fill').forEach(f=>f.style.width=progress+'%');
+      document.querySelectorAll('.music-time').forEach(t=>t.textContent=formatTime(Math.floor(audioPlayer.currentTime)));
+    }
+  });
+  audioPlayer.addEventListener('ended',()=>{
+    if(currentTrackIndex<S.user.tracks.length-1){playTrack(currentTrackIndex+1)}
+    else{isPlaying=false;updatePlayButton()}
+  });
+}
+
+function handleFileUpload(e){
+  const files=Array.from(e.target.files);if(!files.length)return;
+  files.forEach(file=>{
+    if(!file.type.startsWith('audio/'))return;
+    const reader=new FileReader();
+    reader.onload=function(ev){
+      const track={id:Date.now()+Math.random(),name:file.name.replace(/\.[^/.]+$/,''),duration:0,data:ev.target.result};
+      const tempAudio=new Audio(ev.target.result);
+      tempAudio.addEventListener('loadedmetadata',()=>{
+        track.duration=tempAudio.duration;
+        if(!S.user.tracks)S.user.tracks=[];
+        S.user.tracks.push(track);save();renderMusicTab();toast('🎵 Трек добавлен: '+track.name);
+      });
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function handleAvatarUpload(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    S.user.avatar=ev.target.result;
+    save();
+    toast('✅ Фото профиля обновлено!');
+    go();
+  };
+  reader.readAsDataURL(file);
+}
+
+function playTrack(index){
+  if(!S.user.tracks||!S.user.tracks[index])return;
+  currentTrackIndex=index;const track=S.user.tracks[index];
+  audioPlayer.src=track.data;audioPlayer.play();isPlaying=true;
+  updatePlayButton();updateMiniPlayer();renderMusicTab();
+}
+function togglePlay(){
+  if(currentTrackIndex===-1&&S.user.tracks&&S.user.tracks.length>0){playTrack(0);return}
+  if(isPlaying){audioPlayer.pause();isPlaying=false}else{audioPlayer.play();isPlaying=true}
+  updatePlayButton();
+}
+function updatePlayButton(){document.querySelectorAll('[data-action="toggle-play"]').forEach(btn=>btn.textContent=isPlaying?'⏸':'▶')}
+function updateMiniPlayer(){
+  const mini=document.getElementById('mini-player');if(!mini)return;
+  if(currentTrackIndex===-1||!S.user.tracks||!S.user.tracks[currentTrackIndex]){mini.classList.add('hidden');return}
+  const track=S.user.tracks[currentTrackIndex];mini.classList.remove('hidden');
+  document.getElementById('mini-track-name').textContent=track.name;
+  document.getElementById('mini-track-artist').textContent=formatTime(track.duration);
+}
+function deleteTrack(id,e){
+  e.stopPropagation();if(!confirm('Удалить этот трек?'))return;
+  S.user.tracks=S.user.tracks.filter(t=>t.id!==id);save();
+  if(currentTrackIndex>=S.user.tracks.length){currentTrackIndex=-1;audioPlayer.pause();isPlaying=false;updateMiniPlayer()}
+  renderMusicTab();toast('🗑️ Трек удалён');
+}
+function seekAudio(e){if(!audioPlayer.duration)return;const rect=e.currentTarget.getBoundingClientRect();const pos=(e.clientX-rect.left)/rect.width;audioPlayer.currentTime=pos*audioPlayer.duration}
+
+function renderMusicTab(){
+  const tracks=S.user.tracks||[];
+  let h='<div class="card"><h3 style="margin-bottom:16px">🎵 Музыкальный плеер</h3>';
+  h+='<div class="file-upload"><button class="btn btn-fire">📁 Загрузить MP3<input type="file" accept="audio/*" multiple onchange="handleFileUpload(event)"></button></div>';
+  if(tracks.length===0){h+='<div class="center muted" style="padding:40px 0">Нет треков. Загрузите MP3 файлы.</div>'}
+  else{
+    h+='<div class="music-player"><div class="music-controls">';
+    h+='<button class="music-btn" data-action="toggle-play">'+(isPlaying?'⏸':'▶')+'</button>';
+    h+='<div class="music-progress"><div class="music-progress-fill"></div></div>';
+    h+='<div class="music-time">0:00</div></div>';
+    h+='<div class="track-list">';
+    tracks.forEach((track,idx)=>{
+      const isActive=idx===currentTrackIndex;
+      h+='<div class="track-item '+(isActive?'active':'')+'" onclick="playTrack('+idx+')">';
+      h+='<div class="track-icon">🎵</div><div class="track-info"><div class="track-name">'+track.name+'</div>';
+      h+='<div class="track-duration">'+formatTime(track.duration)+'</div></div>';
+      h+='<div class="track-delete" onclick="deleteTrack('+track.id+',event)">✕</div></div>';
+    });
+    h+='</div></div>';
+  }
+  h+='</div>';return h;
+}
+
+function go(){
+  const app=document.getElementById('app');
+  if(!S.user){
+    if(S.view==='quiz'){app.innerHTML=rQuiz();bQuiz()}
+    else if(S.view==='reg'){app.innerHTML=rReg()}
+    else{app.innerHTML=rWelcome()}
+  }else{
+    if(S.view==='pay'){app.innerHTML=rPay();bPay()}
+    else{app.innerHTML=rDash();bDash()}
+  }
+}
+
+function rWelcome(){
+  return'<div class="card glass center" style="padding:48px 24px;margin-top:40px">'+
+    '<div style="font-size:56px;margin-bottom:20px" class="grad">🧭</div>'+
+    '<h2 style="font-size:26px;margin-bottom:12px;font-weight:900">FitPro AI</h2>'+
+    '<p class="muted" style="font-size:15px;line-height:1.7;margin-bottom:32px">Персональные тренировки + питание на основе ИИ. Начни бесплатно.</p>'+
+    '<ul style="text-align:left;margin:0 auto 28px;max-width:320px;color:var(--text2);font-size:14px;list-style:none">'+
+    '<li style="margin-bottom:8px">✓ Адаптивные тренировки (силовые + кардио)</li>'+
+    '<li style="margin-bottom:8px">✓ Детальные гиды: исходное и конечное положение</li>'+
+    '<li style="margin-bottom:8px">✓ Рацион из натуральных продуктов</li>'+
+    '<li style="margin-bottom:8px">✓ ИИ-коуч с персональными советами</li>'+
+    '<li style="margin-bottom:8px">✓ Система уровней и FitCoins</li>'+
+    '<li>✓ 7 дней бесплатно • без обязательств</li></ul>'+
+    '<button class="btn btn-fire" onclick="S.view=\'quiz\';go()">🔥 Начать →</button></div>';
+}
+
+function rQuiz(){
+  const q=QS[S.step];const pct=((S.step+1)/QS.length)*100;let body='';
+  if(q.type==='n'){const val=S.ans[q.k]||'';body='<input type="number" class="inp" id="qnum" min="'+q.min+'" max="'+q.max+'" placeholder="'+q.p+'" value="'+val+'">';if(q.h)body+='<div class="sm muted" style="margin-top:-8px;margin-bottom:16px">'+q.h+'</div>'}
+  else{body='<div>';q.o.forEach(o=>{const sel=S.ans[q.k]===o.v?'sel':'';body+='<label class="chip '+sel+'" data-v="'+o.v+'"><input type="radio" name="'+q.k+'" value="'+o.v+'" '+(sel?'checked':'')+'><span style="font-size:24px">'+o.e+'</span><span>'+o.t+'</span></label>'});body+='</div>'}
+  const last=S.step===QS.length-1;
+  return'<div class="card"><div class="prog"><div class="prog-f" style="width:'+pct+'%"></div></div>'+
+    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)">'+
+    '<div style="background:var(--grad);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px">'+(S.step+1)+'</div>'+
+    '<div style="font-size:18px;font-weight:700">'+q.t+'</div></div>'+body+
+    '<div class="flex jb" style="gap:12px;margin-top:24px">'+
+    (S.step>0?'<button class="btn btn-g btn-s" onclick="S.step--;go()">← Назад</button>':'<div></div>')+
+    '<button class="btn btn-fire" id="btn-next-quiz" '+(valid()?'':'disabled')+' onclick="handleNextStep()">'+(last?'🔥 Далее: Регистрация':'🔥 Далее →')+'</button></div></div>';
+}
+
+function valid(){
+  const q=QS[S.step];let ok=false;
+  if(q.type==='n'){const v=parseFloat(S.ans[q.k]);ok=!isNaN(v)&&v>=q.min&&v<=q.max;if(q.k==='tw'&&S.ans.cw)ok=ok&&Math.abs(v-parseFloat(S.ans.cw))<=50}
+  else{ok=!!S.ans[q.k]}return ok;
+}
+function updateNextBtnState(){const btn=document.getElementById('btn-next-quiz');if(btn)btn.disabled=!valid()}
+function handleNextStep(){if(valid()){if(S.step<QS.length-1){S.step++;go()}else{S.view='reg';go()}}}
+
+function bQuiz(){
+  document.querySelectorAll('.chip').forEach(ch=>{ch.onclick=function(){
+    S.ans[QS[S.step].k]=this.getAttribute('data-v');
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('sel'));
+    this.classList.add('sel');this.querySelector('input').checked=true;updateNextBtnState();
+  }});
+  const ni=document.getElementById('qnum');
+  if(ni)ni.addEventListener('input',function(){S.ans[QS[S.step].k]=this.value;updateNextBtnState()});
+  updateNextBtnState();
+}
+
+window.doRegister=function(){
+  try{
+    const fnInput=document.getElementById('rfname');const emInput=document.getElementById('remail');
+    if(!fnInput||!emInput){toast('❌ Ошибка интерфейса');return}
+    const fn=fnInput.value.trim();const em=emInput.value.trim();
+    if(!fn){toast('⚠️ Введите имя!');fnInput.focus();return}
+    toast('⏳ Создание профиля...');
+    S.user={firstName:fn,email:em,streak:0,totalWorkouts:0,lastWorkoutDate:null,
+      workoutHistory:[],waterToday:0,waterDate:new Date().toDateString(),waterStreak:0,
+      achievements:[],trialStart:Date.now(),trialAccepted:false,
+      quizData:S.ans?{...S.ans}:{},reminders:{workout:{enabled:true,time:'09:00'},water:{enabled:true}},
+      mealsSelected:{},mealsPortions:{},tracks:[],xp:0,fitCoins:0,avatar:null,
+      earlyWorkouts:0,lateWorkouts:0,lastPlanUpdate:new Date().toDateString()};
+    save();toast('🎉 Профиль создан!');S.view='dash';S.tab='workout';
+    setTimeout(()=>{go();setTimeout(showTrial,600)},400);
+  }catch(error){console.error(error);toast('❌ Ошибка: '+error.message)}
+};
+
+function rReg(){
+  return'<div class="card" style="max-width:500px;margin:40px auto;position:relative;z-index:100">'+
+    '<h2 class="center" style="font-size:22px;margin-bottom:8px">🔐 Создание профиля</h2>'+
+    '<p class="center muted" style="margin-bottom:20px">Последний шаг перед генерацией плана</p>'+
+    '<input type="text" class="inp" id="rfname" placeholder="Ваше имя">'+
+    '<input type="text" class="inp" id="remail" placeholder="Email (необязательно)">'+
+    '<button class="btn btn-fire" onclick="window.doRegister()">🔥 Создать профиль 🤖</button></div>';
+}
+
+function rDash(){
+  const u=S.user;const metrics=genMetrics(u.quizData);const streak=u.streak||0;
+  const gt={lose:'Похудение 🔥',maintain:'Поддержание ⚖️',gain:'Набор массы 💪'}[metrics.goalCategory];
+  const info=getSubscriptionInfo(u);const dl=u.trialStart?daysLeft(u.trialStart):0;
+  const te=u.trialStart?new Date(u.trialStart+TRIAL).toLocaleDateString('ru-RU',{day:'numeric',month:'short'}):'';
+  const levelInfo=getLevelInfo(u.xp||0);
+
+  let h='<div class="header"><div class="grad" style="font-size:20px;font-weight:900">🧭 FitPro AI</div>'+
+    '<div class="flex ic gap"><div class="streak streak-fire"><span class="f">🔥</span>'+streak+' дн.</div>'+
+    '<div class="coins-display"><span class="coins-icon">💰</span>'+(u.fitCoins||0)+'</div>'+
+    '<div class="user-pill" onclick="S.tab=\'profile\';go()"><div class="user-av">'+(u.avatar?'<img src="'+u.avatar+'">':(u.firstName?u.firstName[0].toUpperCase():'U'))+'</div>'+
+    '<div class="sm" style="font-weight:600">'+(u.firstName||'User')+'</div></div></div></div>';
+
+  h+='<div class="level-bar"><div class="level-header"><div class="level-badge"><div class="level-icon">'+levelInfo.current.icon+'</div>'+
+    '<div class="level-info"><div class="level-name">Уровень '+levelInfo.current.level+': '+levelInfo.current.name+'</div>'+
+    '<div class="level-xp">'+levelInfo.xpInLevel+' / '+levelInfo.xpNeeded+' XP</div></div></div></div>'+
+    '<div class="xp-bar"><div class="xp-bar-fill" style="width:'+levelInfo.progress+'%"></div></div></div>';
+
+  const hour=new Date().getHours();
+  let coachContext='motivation';
+  if(hour<12)coachContext='morning';else if(hour<18)coachContext='afternoon';else coachContext='evening';
+  const coachTip=getCoachTip(coachContext);
+  h+='<div class="coach-card"><div class="coach-header"><div class="coach-avatar">🤖</div>'+
+    '<div><div class="coach-name">ИИ-Коуч</div><div class="coach-subtitle">Персональный совет дня</div></div></div>'+
+    '<div class="coach-tip">'+coachTip+'</div></div>';
+
+  if(info.isLifetime){
+    h+='<div class="card glass" style="border-color:var(--gold);background:linear-gradient(135deg,rgba(251,191,36,.1),rgba(245,158,11,.05))"><div class="flex ic gap">'+
+      '<div style="font-size:32px">💎</div><div style="flex:1"><strong style="color:var(--gold);font-size:16px">Подписка "Навсегда" активна</strong>'+
+      '<p class="sm" style="margin-top:4px;color:var(--text)">Безграничное количество тренировок</p></div></div></div>';
+  }else if(info.free>0){
+    h+='<div class="card glass" style="border-color:var(--ok)"><div class="flex ic gap">'+
+      '<div style="font-size:24px">🎁</div><div style="flex:1"><strong style="color:var(--ok)">'+info.free+' бесплатных дней осталось!</strong>'+
+      '<p class="sm muted" style="margin-top:2px">Доступ до '+te+'</p></div>'+
+      '<span class="streak" style="background:rgba(16,185,129,.15);color:var(--ok);border-color:rgba(16,185,129,.3)">'+info.free+' дн</span></div></div>';
+  }
+  if(info.paid>0&&!info.isLifetime){
+    const tl={week:'Неделя',month:'Месяц',year:'Год'};
+    h+='<div class="card glass" style="border-color:var(--v)"><div class="flex ic gap">'+
+      '<div style="font-size:24px">✨</div><div style="flex:1"><strong style="color:var(--v)">Подписка "'+tl[info.type]+'" активна</strong>'+
+      '<p class="sm muted" style="margin-top:2px">Доступно ещё '+info.paid+' дней</p></div></div></div>';
+  }
+  if(info.total===0&&!info.isLifetime){
+    h+='<div class="card glass" style="border-color:var(--err)"><div class="flex ic gap">'+
+      '<div style="font-size:24px">🔒</div><div style="flex:1"><strong style="color:var(--err)">Пробный период завершён</strong>'+
+      '<p class="sm muted" style="margin-top:2px">Продлите подписку</p></div>'+
+      '<button class="btn btn-fire btn-s" onclick="S.view=\'pay\';go()">🔥 Продлить</button></div></div>';
+  }
+
+  h+='<div class="tabs">'+
+    '<div class="tab '+(S.tab==='workout'?'on':'')+'" data-t="workout">🏋️ Тренировки</div>'+
+    '<div class="tab '+(S.tab==='nutrition'?'on':'')+'" data-t="nutrition">🥗 Питание</div>'+
+    '<div class="tab '+(S.tab==='progress'?'on':'')+'" data-t="progress">📊 Прогресс</div>'+
+    '<div class="tab '+(S.tab==='music'?'on':'')+'" data-t="music">🎵 Музыка</div>'+
+    '<div class="tab '+(S.tab==='profile'?'on':'')+'" data-t="profile">⚙️ Профиль</div></div>';
+  h+='<div id="tc">'+tabContent()+'</div>';
+  return h;
+}
+
+function tabContent(){
+  if(S.tab==='workout')return rWork();
+  if(S.tab==='nutrition')return rNutr();
+  if(S.tab==='progress')return rProg();
+  if(S.tab==='music')return renderMusicTab();
+  if(S.tab==='profile')return rProf();
+  return '';
+}
+
+function rWork(){
+  const u=S.user;const metrics=genMetrics(u.quizData);
+  const gt={lose:'Похудение 🔥',maintain:'Поддержание ⚖️',gain:'Набор массы 💪'}[metrics.goalCategory];
+  const info=getSubscriptionInfo(u);const visibleDays=getVisibleDays(u);
+  const today=new Date();today.setHours(0,0,0,0);
+  const motivation=getCoachTip('motivation');
+
+  let h='<div class="main-layout">';
+  h+='<div class="sidebar"><div class="card"><h3 style="font-size:16px;margin-bottom:16px">📜 История тренировок</h3>';
+  const history=(u.workoutHistory||[]).slice(-30).reverse();
+  if(history.length===0){h+='<p class="sm muted">Пока нет тренировок.</p>'}
+  else{history.forEach(item=>{const date=new Date(item.date);const dateStr=date.toLocaleDateString('ru-RU',{day:'numeric',month:'short'});
+    h+='<div class="history-item"><div class="history-date">'+dateStr+'</div><div class="history-info"><div class="history-focus">'+(item.focus||'Тренировка')+'</div></div></div>'});}
+  h+='</div></div>';
+
+  h+='<div class="main-content">';
+  h+='<div class="card"><div class="flex ic jb" style="margin-bottom:16px"><h2 style="font-size:20px">📊 Ваши показатели</h2>'+
+    '<button class="btn btn-g btn-s" onclick="exportPlan()">📄 Экспорт</button></div>'+
+    '<div class="calorie-banner"><div class="label">ВАША ДНЕВНАЯ НОРМА</div>'+
+    '<div class="value">'+metrics.targetCalories.toLocaleString('ru-RU')+' ккал</div>'+
+    '<div class="sub">Для достижения цели: <strong>'+gt+'</strong></div></div>'+
+    '<div class="metrics-container">'+
+    '<div class="metric-box"><div class="metric-bar"><span class="metric-value">'+metrics.protein+'г</span></div><div class="metric-label">Белки</div></div>'+
+    '<div class="metric-box"><div class="metric-bar"><span class="metric-value">'+metrics.fats+'г</span></div><div class="metric-label">Жиры</div></div>'+
+    '<div class="metric-box"><div class="metric-bar"><span class="metric-value">'+metrics.carbs+'г</span></div><div class="metric-label">Углеводы</div></div>'+
+    '<div class="metric-box"><div class="metric-bar"><span class="metric-value">'+metrics.tdee+'</span></div><div class="metric-label">TDEE (расход)</div></div></div></div>';
+
+  if(info.isLifetime){h+='<div class="card glass" style="text-align:center;padding:20px"><p class="sm"><strong style="color:var(--gold)">💎 Безграничный доступ</strong> — все тренировки доступны навсегда!</p></div>'}
+  else if(visibleDays>0){h+='<div class="card glass" style="text-align:center;padding:16px"><p class="sm">📅 Доступно тренировок: <strong style="color:var(--v)">'+visibleDays+' дней</strong></p></div>'}
+
+  h+='<div class="card"><h3 style="margin-bottom:16px">📅 План тренировок на 30 дней</h3>';
+  for(let i=0;i<Math.min(visibleDays,30);i++){
+    const date=new Date(today.getTime()+i*DAY_MS);const isUnlocked=i<visibleDays;const isToday=i===0;
+    const dayName=DAY_NAMES[date.getDay()===0?6:date.getDay()-1];
+    const dateStr=date.toLocaleDateString('ru-RU',{day:'numeric',month:'short'});
+    const workout=genDayWorkout(i,u.quizData);
+    if(!isUnlocked){h+='<div class="day locked"><h4><span>'+dayName+'</span> <span class="day-date">'+dateStr+'</span></h4><p class="sm muted">🔒 Доступно после подписки</p></div>';continue}
+    if(workout.rest){
+      h+='<div class="day rest '+(isToday?'today':'')+'"><h4><span>☾ '+dayName+': Отдых</span> <span class="day-date">'+dateStr+'</span></h4>'+
+        '<div style="padding:12px;background:rgba(16,185,129,.1);border-radius:12px;margin-top:12px"><div class="flex ic gap"><span style="font-size:24px">🚶</span><div><strong style="color:var(--ok)">Прогулка и растяжка</strong><br><span class="sm">Легкая активность для восстановления</span></div></div></div></div>';
+    }else{
+      h+='<div class="day '+(isToday?'today':'')+'"><h4><span>▸ '+dayName+': '+workout.focus+'</span> <span class="day-date">'+dateStr+'</span></h4>';
+      workout.exercises.forEach((e,ei)=>{const restDisplay=formatTime(e.rest);
+        h+='<div class="ex"><div class="ex-name">'+(e.e||'💪')+' '+e.n+' '+(e.isCardio?'<span class="tag tag-c">Кардио</span>':'<span class="tag tag-s">Сила</span>')+
+          ' <button class="btn btn-g btn-s" style="padding:4px 10px;font-size:11px;margin-left:8px" onclick="togM('+i+','+ei+')">📺 Гид</button></div>'+
+          '<div class="ex-meta"><strong>'+e.s+'×'+e.r+'</strong><br><span class="xs">отдых '+restDisplay+'</span></div></div>'+
+          '<div class="hide" id="em-'+i+'-'+ei+'" style="background:var(--bg);border-radius:12px;padding:12px;margin:8px 0;border:1px solid var(--border)">'+
+          '<div class="wo-pos-box"><div class="wo-pos-title start">🟢 Исходное</div><div class="wo-pos-text">'+(e.startPos||'Следите за дыханием.')+'</div></div>'+
+          '<div class="wo-pos-box"><div class="wo-pos-title end">🎯 Конечное</div><div class="wo-pos-text">'+(e.endPos||'Удерживайте положение.')+'</div></div>'+
+          '<a class="yt-btn" href="https://rutube.ru/search/?query='+encodeURIComponent(e.y||e.n+' техника')+'" target="_blank" rel="noopener">▶ Смотреть на RUTUBE</a></div>';
+      });
+      h+='<div class="day-actions"><button class="btn btn-fire" onclick="startWorkout('+i+')">▶ Начать тренировку</button></div></div>';
+    }
+  }
+  h+='</div><div class="card glass center" style="border-color:var(--c)"><p class="sm muted" style="margin-bottom:16px">Хотите больше тренировок? <strong>Продлите доступ</strong>.</p>'+
+    '<button class="btn btn-fire" onclick="S.view=\'pay\';go()">🔥 Посмотреть тарифы</button></div>';
+  h+='</div>';
+
+  h+='<div class="sidebar"><div class="card"><h3 style="font-size:16px;margin-bottom:16px">🏆 Топ-100</h3>';
+  const leaderboard=generateLeaderboard();
+  leaderboard.slice(0,100).forEach((item,idx)=>{
+    h+='<div class="leaderboard-item"><div class="leaderboard-rank">#'+(idx+1)+'</div><div class="leaderboard-avatar">'+item.name[0]+'</div><div class="leaderboard-info"><div class="leaderboard-name">'+item.name+'</div><div class="leaderboard-streak">🔥 '+item.streak+' дн.</div>';
+    h+='<div class="leaderboard-achievements">';
+    item.achievements.forEach(ach=>{
+      h+='<div class="leaderboard-ach" title="'+ach.t+'">'+ach.i+'</div>';
+    });
+    h+='</div></div></div>';
+  });
+  h+='</div></div></div>';
+  return h;
+}
+
+function togM(di,ei){const el=document.getElementById('em-'+di+'-'+ei);if(el)el.classList.toggle('hide')}
+
+function startWorkout(dayIndex){
+  const u=S.user;const today=new Date();today.setHours(0,0,0,0);
+  const date=new Date(today.getTime()+dayIndex*DAY_MS);
+  const workout=genDayWorkout(dayIndex,u.quizData);
+  if(!workout||workout.rest||workout.exercises.length===0){toast('⚠️ Нет упражнений');return}
+  workoutState={dayIndex:dayIndex,dayName:DAY_NAMES[date.getDay()===0?6:date.getDay()-1],focus:workout.focus,
+    exercises:workout.exercises,currentEx:0,currentSet:1,phase:'exercise',restTime:0,restDuration:150,
+    completedSets:0,skippedExercises:0,startTime:Date.now()};
+  renderWorkoutMode();
+}
+
+function renderWorkoutMode(){
+  const ws=workoutState;const container=document.getElementById('workout-mode');
+  if(ws.phase==='complete'){
+    const duration=Math.floor((Date.now()-ws.startTime)/1000);const mins=Math.floor(duration/60);const secs=duration%60;
+    container.innerHTML='<div class="workout-mode"><div class="workout-body"><div class="workout-complete">'+
+      '<div class="workout-complete-icon">🏆</div><div class="workout-complete-title">Тренировка завершена!</div>'+
+      '<p class="muted">Отличная работа! +50 XP +50 FitCoins</p>'+
+      '<div class="workout-complete-stats">'+
+      '<div class="workout-stat"><div class="workout-stat-value">'+mins+':'+secs.toString().padStart(2,'0')+'</div><div class="workout-stat-label">Время</div></div>'+
+      '<div class="workout-stat"><div class="workout-stat-value">'+ws.completedSets+'</div><div class="workout-stat-label">Подходов</div></div>'+
+      '<div class="workout-stat"><div class="workout-stat-value">'+ws.exercises.length+'</div><div class="workout-stat-label">Упражнений</div></div></div>'+
+      '<button class="btn btn-fire" onclick="finishWorkout()">✅ Завершить и сохранить</button></div></div></div>';
+    return;
+  }
+  if(ws.phase==='confirm'){
+    container.innerHTML='<div class="workout-mode"><div class="workout-body" style="display:flex;align-items:center;justify-content:center;min-height:80vh">'+
+      '<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:28px;max-width:400px;width:100%;text-align:center">'+
+      '<div style="font-size:20px;font-weight:700;margin-bottom:12px">💪 Подход выполнен?</div>'+
+      '<div style="font-size:14px;color:var(--text2);margin-bottom:24px">Вы выполнили подход '+(ws.currentSet-1)+' из '+ws.exercises[ws.currentEx].s+'</div>'+
+      '<div class="flex gap" style="gap:12px">'+
+      '<button class="btn btn-g" onclick="redoSet()">🔄 Повторить</button>'+
+      '<button class="btn btn-ok" onclick="confirmSet()">✓ Да, отдых</button></div></div></div></div>';
+    return;
+  }
+  const ex=ws.exercises[ws.currentEx];const totalEx=ws.exercises.length;
+  const progress=((ws.currentEx)/totalEx)*100;let content='';
+  if(ws.phase==='rest'){
+    const circ=2*Math.PI*90;const offset=circ*(1-ws.restTime/ws.restDuration);
+    const restDisplay=formatTime(ws.restTime);const restTotalDisplay=formatTime(ws.restDuration);
+    content='<div class="workout-exercise-card"><div style="text-align:center;font-size:14px;color:var(--text2);margin-bottom:8px">ОТДЫХ МЕЖДУ ПОДХОДАМИ</div>'+
+      '<div class="rest-info-display"><div class="label">Время отдыха</div><div class="value">'+restTotalDisplay+'</div></div>'+
+      '<div class="rest-timer"><svg viewBox="0 0 200 200"><defs><linearGradient id="tg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff6b35"/><stop offset="100%" stop-color="#ffcc00"/></linearGradient></defs>'+
+      '<circle style="fill:none;stroke:var(--border);stroke-width:10" cx="100" cy="100" r="90"/>'+
+      '<circle id="rest-fg" style="fill:none;stroke:url(#tg);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s linear" cx="100" cy="100" r="90" stroke-dasharray="'+circ+'" stroke-dashoffset="'+offset+'"/></svg>'+
+      '<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">'+
+      '<div id="rest-timer-display" style="font-size:48px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">'+restDisplay+'</div>'+
+      '<div style="font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:.1em;margin-top:4px">секунд</div></div></div>'+
+      '<div class="workout-actions"><button class="btn btn-ok" onclick="skipRest()">⏭ Пропустить отдых</button></div></div>';
+  }else{
+    const restDisplay=formatTime(ex.rest);
+    content='<div class="workout-exercise-card"><div style="text-align:center;font-size:14px;color:var(--text2);margin-bottom:8px">УПРАЖНЕНИЕ '+(ws.currentEx+1)+' ИЗ '+totalEx+'</div>'+
+      '<div style="font-size:48px;margin-bottom:8px">'+ex.e+'</div>'+
+      '<div class="workout-exercise-name">'+ex.n+'</div>'+
+      '<div class="workout-exercise-muscle">'+ex.m+'</div>'+
+      '<div class="workout-exercise-params">'+
+      '<div class="workout-param"><div class="workout-param-label">Подход</div><div class="workout-param-value">'+ws.currentSet+' / '+ex.s+'</div></div>'+
+      '<div class="workout-param"><div class="workout-param-label">Повторения</div><div class="workout-param-value">'+ex.r+'</div></div>'+
+      '<div class="workout-param"><div class="workout-param-label">Отдых</div><div class="workout-param-value">'+restDisplay+'</div></div></div>'+
+      '<div class="wo-pos-box"><div class="wo-pos-title start">🟢 Исходное</div><div class="wo-pos-text">'+(ex.startPos||'Следите за дыханием.')+'</div></div>'+
+      '<div class="wo-pos-box"><div class="wo-pos-title end">🎯 Конечное</div><div class="wo-pos-text">'+(ex.endPos||'Удерживайте положение.')+'</div></div>'+
+      '<a class="yt-btn" href="https://rutube.ru/search/?query='+encodeURIComponent(ex.y||ex.n+' техника')+'" target="_blank" rel="noopener" style="display:block;text-align:center;margin-bottom:16px">▶ Смотреть на RUTUBE</a>'+
+      '<div class="workout-actions">'+
+      '<button class="btn btn-ok" onclick="completeSet()">✓ Подход выполнен</button>'+
+      '<button class="btn btn-g" onclick="skipExercise()">⏭ Пропустить</button></div></div>';
+  }
+  container.innerHTML='<div class="workout-mode"><div class="workout-header">'+
+    '<button class="btn btn-g btn-s" onclick="exitWorkout()">✕ Выйти</button>'+
+    '<div class="workout-title">'+ws.dayName+': '+ws.focus+'</div><div style="width:80px"></div></div>'+
+    '<div class="workout-body"><div class="workout-progress"><div class="workout-progress-text"><span>Прогресс</span><span>'+Math.round(progress)+'%</span></div>'+
+    '<div class="prog"><div class="prog-f" style="width:'+progress+'%"></div></div></div>'+content+'</div></div>';
+  if(ws.phase==='rest')startRestTimer();
+}
+
+function startRestTimer(){
+  if(workoutTimer)clearInterval(workoutTimer);
+  const ex=workoutState.exercises[workoutState.currentEx];
+  workoutState.restDuration=ex.rest||150;workoutState.restTime=workoutState.restDuration;updateRestTimerDisplay();
+  workoutTimer=setInterval(()=>{
+    workoutState.restTime--;updateRestTimerDisplay();
+    if(workoutState.restTime<=0){clearInterval(workoutTimer);workoutTimer=null;playSound('complete');nextSet()}
+  },1000);
+}
+function updateRestTimerDisplay(){
+  const display=document.getElementById('rest-timer-display');if(display)display.textContent=formatTime(workoutState.restTime);
+  const circ=2*Math.PI*90;const offset=circ*(1-workoutState.restTime/workoutState.restDuration);
+  const fg=document.getElementById('rest-fg');if(fg)fg.style.strokeDashoffset=offset;
+}
+function playSound(type){
+  try{const ctx=new(window.AudioContext||window.webkitAudioContext)();const osc=ctx.createOscillator();const gain=ctx.createGain();
+    osc.connect(gain);gain.connect(ctx.destination);osc.frequency.value=type==='complete'?880:800;osc.type='sine';
+    gain.gain.setValueAtTime(0.3,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.5);
+    osc.start(ctx.currentTime);osc.stop(ctx.currentTime+0.5)}catch(e){}
+}
+function completeSet(){workoutState.completedSets++;workoutState.currentSet++;workoutState.phase='confirm';renderWorkoutMode()}
+function redoSet(){workoutState.currentSet--;workoutState.completedSets--;workoutState.phase='exercise';renderWorkoutMode()}
+function confirmSet(){const ws=workoutState;const ex=ws.exercises[ws.currentEx];if(ws.currentSet<=ex.s){ws.phase='rest';renderWorkoutMode()}else{nextExercise()}}
+function nextSet(){const ws=workoutState;const ex=ws.exercises[ws.currentEx];if(ws.currentSet<ex.s){ws.phase='rest';renderWorkoutMode()}else{nextExercise()}}
+function skipExercise(){workoutState.skippedExercises++;workoutState.currentEx++;workoutState.currentSet=1;
+  if(workoutState.currentEx>=workoutState.exercises.length){workoutState.phase='complete';playSound('complete');renderWorkoutMode()}
+  else{workoutState.phase='exercise';renderWorkoutMode()}}
+function nextExercise(){const ws=workoutState;ws.currentEx++;ws.currentSet=1;
+  if(ws.currentEx>=ws.exercises.length){ws.phase='complete';playSound('complete');renderWorkoutMode()}
+  else{ws.phase='exercise';renderWorkoutMode()}}
+function skipRest(){if(workoutTimer)clearInterval(workoutTimer);workoutTimer=null;nextSet()}
+function exitWorkout(){if(confirm('Выйти из тренировки?')){if(workoutTimer)clearInterval(workoutTimer);workoutTimer=null;workoutState=null;document.getElementById('workout-mode').innerHTML=''}}
+function finishWorkout(){
+  updateStreak();const na=checkAch();
+  if(workoutTimer)clearInterval(workoutTimer);workoutTimer=null;workoutState=null;
+  document.getElementById('workout-mode').innerHTML='';
+  toast('🏆 Тренировка сохранена! +50 XP +50 💰');go();
+  if(na.length>0){setTimeout(()=>{playSound('achievement');showAch(na[0])},500)}
+}
+
+function rNutr(){
+  const meals=genMeals(S.user.quizData);
+  const cats=[{k:'breakfast',t:'🌅 Завтрак'},{k:'lunch',t:'☀️ Обед'},{k:'dinner',t:'🌙 Ужин'},{k:'snack',t:'🍎 Перекус'}];
+  let h='<div class="card"><div style="margin-bottom:18px;padding:14px 18px;background:rgba(139,92,246,.1);border-radius:var(--r);border:1px solid rgba(139,92,246,.3)">'+
+    '<strong class="grad" style="font-size:14px">🤖 Совет ИИ-нутрициолога:</strong><p class="sm muted" style="margin-top:6px">Только натуральные продукты. Настройте порцию.</p></div>';
+  cats.forEach(c=>{h+=rMeal(c.k,c.t,meals[c.k])});return h+'</div>';
+}
+
+function rMeal(cat,title,slot){
+  const s=slot.sel;const calc=(m,p)=>({kcal:Math.round(m.kcal*p/100),p:Math.round(m.p*p/100),f:Math.round(m.f*p/100),c:Math.round(m.c*p/100)});
+  const cur=calc(s,s.portion);let opts='';
+  slot.opts.forEach(o=>{const isSelected=o.id===s.id;
+    opts+='<label class="meal-opt '+(isSelected?'sel':'')+'" onclick="selMeal(\''+cat+'\',\''+o.id+'\')">'+
+      '<input type="radio" name="'+cat+'-opt" '+(isSelected?'checked':'')+'>'+
+      '<div style="flex:1;min-width:0"><div style="font-weight:600;font-size:14px">'+o.name+'</div>'+
+      '<div class="xs muted" style="margin-top:2px">'+o.g+' • '+o.kcal+' ккал • Б'+o.p+'/Ж'+o.f+'/У'+o.c+'</div></div></label>'});
+  return'<div class="meal" data-cat="'+cat+'"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;gap:12px">'+
+    '<div style="flex:1"><div class="xs muted" style="text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">'+title+'</div>'+
+    '<div class="meal-name">'+s.name+'</div><div class="meal-g">'+s.g+'</div></div>'+
+    '<span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(34,211,238,.2));border:1px solid var(--v);border-radius:12px;font-size:10px;font-weight:600">🤖 ИИ</span></div>'+
+    '<div class="macros" id="mc-'+cat+'"><span class="pill pill-k">🔥 '+cur.kcal+' ккал</span><span class="pill pill-p">🥩 '+cur.p+'г</span><span class="pill pill-f">🥑 '+cur.f+'г</span><span class="pill pill-c">🍚 '+cur.c+'г</span></div>'+
+    '<div style="display:flex;align-items:center;gap:12px;margin-top:12px;padding:12px;background:var(--bg);border-radius:12px">'+
+    '<label class="sm muted">Порция:</label><input type="range" min="80" max="120" value="'+s.portion+'" oninput="updPortion(\''+cat+'\',this.value)" style="flex:1;accent-color:var(--v)">'+
+    '<span id="pv-'+cat+'" style="font-weight:700;font-size:13px;min-width:40px;text-align:right;color:var(--v)">'+s.portion+'%</span></div>'+
+    '<div style="margin-top:16px">'+opts+'</div>'+
+    '<button class="btn btn-g btn-s" style="margin-top:12px;color:var(--v);border-color:var(--v)" onclick="regenM(\''+cat+'\')">🔄 Другой вариант</button></div>';
+}
+
+function updPortion(cat,val){
+  if(!S.user.mealsPortions)S.user.mealsPortions={};S.user.mealsPortions[cat]=val;
+  document.getElementById('pv-'+cat).textContent=val+'%';
+  const meals=genMeals(S.user.quizData);const s=meals[cat].sel;const c=v=>Math.round(v*val/100);
+  const el=document.getElementById('mc-'+cat);
+  if(el)el.innerHTML='<span class="pill pill-k">🔥 '+c(s.kcal)+' ккал</span><span class="pill pill-p">🥩 '+c(s.p)+'г</span><span class="pill pill-f">🥑 '+c(s.f)+'г</span><span class="pill pill-c">🍚 '+c(s.c)+'г</span>';
+  save();
+}
+function selMeal(cat,id){
+  if(!S.user.mealsSelected)S.user.mealsSelected={};S.user.mealsSelected[cat]=id;save();
+  const tc=document.getElementById('tc');if(tc){tc.innerHTML=rNutr();bDash()}toast('🔄 Вариант выбран');
+}
+function regenM(cat){
+  const meals=genMeals(S.user.quizData);const slot=meals[cat];
+  const cur=(S.user.mealsSelected&&S.user.mealsSelected[cat])||slot.sel.id;
+  const sh=[...slot.opts].sort(()=>0.5-Math.random());const alt=sh.find(m=>m.id!==cur)||slot.opts[0];
+  if(!S.user.mealsSelected)S.user.mealsSelected={};S.user.mealsSelected[cat]=alt.id;save();
+  const tc=document.getElementById('tc');if(tc){tc.innerHTML=rNutr();bDash()}toast('✨ Новый вариант');
+}
+
+function rProg(){
+  const u=S.user;const today=new Date().toDateString();
+  if(u.waterDate!==today){u.waterToday=0;u.waterDate=today;save()}
+  const cal=[];for(let i=29;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const ds=d.toDateString();
+    cal.push({ds,on:(u.workoutHistory||[]).find(h=>new Date(h.date).toDateString()===ds),today:ds===today})}
+  const ul=u.achievements||[];
+  let h='<div class="card"><h3 style="margin-bottom:16px">💧 Водный баланс</h3><p class="sm muted">Выпито: <strong style="color:var(--c)">'+(u.waterToday||0)+' / 8</strong></p><div class="water-grid">';
+  for(let i=0;i<8;i++)h+='<div class="wg '+((u.waterToday||0)>i?'on':'')+'" onclick="togW('+i+')"></div>';h+='</div></div>';
+  h+='<div class="card"><h3 style="margin-bottom:16px">📅 Календарь активности</h3><div class="cal-grid">';
+  cal.forEach(d=>{h+='<div class="cd '+(d.on?'on':'')+' '+(d.today?'today':'')+'" title="'+new Date(d.ds).toLocaleDateString('ru-RU')+'"></div>'});h+='</div></div>';
+  h+='<div class="card"><h3 style="margin-bottom:16px">🏆 Достижения ('+ul.length+'/'+ACH.length+')</h3><div class="ach-grid">';
+  ACH.forEach(a=>{h+='<div class="ach '+(ul.includes(a.id)?'on':'off')+'"><span class="ach-i">'+a.i+'</span><div class="ach-t">'+a.t+'</div><div class="ach-d">'+a.d+'</div></div>'});
+  h+='</div></div>';return h+'</div>';
+}
+
+function togW(i){
+  const u=S.user;const today=new Date().toDateString();
+  if(u.waterDate!==today){u.waterToday=0;u.waterDate=today}
+  u.waterToday=(u.waterToday||0)>i?i:i+1;
+  if(u.waterToday>=8){if(!u.waterStreak)u.waterStreak=0;u.waterStreak++}
+  save();checkAch();const tc=document.getElementById('tc');if(tc)tc.innerHTML=rProg();
+}
+
+function showAch(a){
+  document.getElementById('modal').innerHTML='<div class="modal-bg"><div class="modal center">'+
+    '<button class="modal-x" onclick="closeM()">✕</button><div style="font-size:72px;margin-bottom:16px">'+a.i+'</div>'+
+    '<h3 style="font-size:22px;font-weight:800;margin-bottom:8px">Новое достижение!</h3>'+
+    '<div class="grad" style="font-size:20px;margin-bottom:8px">'+a.t+'</div>'+
+    '<p class="muted">'+a.d+'</p><button class="btn btn-fire" style="margin-top:20px" onclick="closeM()">🔥 Отлично!</button></div></div>';
+}
+function closeM(){document.getElementById('modal').innerHTML=''}
+
+function rPay(){
+  const info=getSubscriptionInfo(S.user);
+  let h='<div class="card glass center" style="padding:36px 24px;border-color:var(--v)">'+
+    '<div style="font-size:44px;margin-bottom:14px">🔓</div><h2 style="font-size:23px;margin-bottom:10px">Тарифы</h2>';
+  if(info.isLifetime){h+='<div class="card" style="margin-bottom:20px;border-color:var(--gold);background:linear-gradient(135deg,rgba(251,191,36,.1),rgba(245,158,11,.05))"><div class="sm"><strong style="color:var(--gold)">💎 У вас активен тариф "Навсегда"</strong></div></div>'}
+  else if(info.free>0){h+='<div style="background:rgba(16,185,129,.1);padding:12px;border-radius:12px;margin-bottom:20px;border:1px solid rgba(16,185,129,.3)"><p class="sm">✨ У вас ещё есть <strong style="color:var(--ok)">'+info.free+' бесплатных дней</strong></p></div>'}
+  h+='<div class="pw-grid">'+
+    '<div class="pw-card" data-plan="week" data-price="190"><div class="pw-n">Неделя</div><div class="pw-c">190 ₽</div><div class="pw-o">999 ₽</div><div class="pw-s">−81%</div><div class="pw-days">+7 дней</div><button class="btn btn-fire btn-s" style="margin-top:12px" onclick="buyPlan(\'week\',190,this)">🔥 Выбрать</button></div>'+
+    '<div class="pw-card" data-plan="month" data-price="299"><div class="pw-n">Месяц</div><div class="pw-c">299 ₽</div><div class="pw-o">1 490 ₽</div><div class="pw-s">−80%</div><div class="pw-days">30 дней</div><button class="btn btn-fire btn-s" style="margin-top:12px" onclick="buyPlan(\'month\',299,this)">🔥 Выбрать</button></div>'+
+    '<div class="pw-card" data-plan="year" data-price="990"><div class="pw-n">Год</div><div class="pw-c">990 ₽</div><div class="pw-o">10 990 ₽</div><div class="pw-s">−91%</div><div class="pw-days">365 дней</div><button class="btn btn-fire btn-s" style="margin-top:12px" onclick="buyPlan(\'year\',990,this)">🔥 Выбрать</button></div>'+
+    '<div class="pw-card hit" data-plan="lifetime" data-price="6990"><div class="pw-n">Навсегда</div><div class="pw-c">6 990 ₽</div><div class="pw-o">24 990 ₽</div><div class="pw-s">−72%</div><div class="pw-days">♾️ Безгранично</div><button class="btn btn-fire btn-s" style="margin-top:12px" onclick="buyPlan(\'lifetime\',6990,this)">🔥 Выбрать</button></div></div>'+
+    '<p class="xs muted" style="margin-top:20px">🔒 Безопасная оплата • Отмена в любой момент</p></div>'+
+    '<button class="btn btn-o" style="margin-top:16px" onclick="S.view=\'dash\';go()">← В личный кабинет</button>';
+  return h;
+}
+
+window.buyPlan=function(plan,price,btnEl){
+  const now=Date.now();let unlockDate;
+  if(plan==='lifetime')unlockDate=now+36500*DAY_MS;
+  else if(plan==='week'){const currentEnd=S.user.trialStart?S.user.trialStart+TRIAL:now;unlockDate=Math.max(currentEnd,now)+7*DAY_MS}
+  else if(plan==='month')unlockDate=now+30*DAY_MS;
+  else if(plan==='year')unlockDate=now+365*DAY_MS;
+  S.user.subscription={plan,price,startedAt:now,isActive:true,unlockDate:unlockDate};save();
+  if(btnEl){btnEl.innerHTML='✓ Активировано';btnEl.style.background='var(--ok)'}
+  setTimeout(()=>{S.view='dash';S.tab='workout';go();toast('✅ Подписка "'+plan+'" активирована!');checkAch()},700);
+}
+function bPay(){}
+
+function rProf(){
+  const u=S.user;const info=getSubscriptionInfo(u);
+  const typeLabels={free:'Бесплатный',week:'Неделя',month:'Месяц',year:'Год',lifetime:'Навсегда'};
+  const isEditing=S.editingProfile;const isEditingMetrics=S.editingMetrics;
+  const theme=localStorage.getItem('theme')||'dark';
+  const reminders=u.reminders||{workout:{enabled:true,time:'09:00'},water:{enabled:true}};
+  const daysPerWeek=+u.quizData.days||3;
+  const levelInfo=getLevelInfo(u.xp||0);
+
+  let h='<div class="card"><h3 style="margin-bottom:20px">⚙️ Настройки профиля</h3>'+
+    '<div class="profile-card">'+
+    '<div class="profile-avatar">'+(u.avatar?'<img src="'+u.avatar+'">':(u.firstName?u.firstName[0].toUpperCase():'U'))+
+    '<div class="avatar-upload"><input type="file" accept="image/*" onchange="handleAvatarUpload(event)"><span style="font-size:20px">📷</span></div></div>'+
+    '<div class="profile-info"><div class="profile-name">'+u.firstName+'</div><div class="profile-email">'+(u.email||'Email не указан')+'</div>';
+
+  const userAchievements=u.achievements||[];
+  const displayAch=userAchievements.slice(0,5);
+  h+='<div class="profile-achievements">';
+  displayAch.forEach(achId=>{
+    const ach=ACH.find(a=>a.id===achId);
+    if(ach)h+='<div class="profile-ach" title="'+ach.t+'">'+ach.i+'</div>';
+  });
+  h+='</div></div>'+
+    '<button class="btn btn-g btn-s" onclick="toggleEditProfile()" style="width:auto">'+(isEditing?'✕ Отмена':'✏️ Изменить')+'</button></div>'+
+    '<div class="edit-form '+(isEditing?'active':'')+'" id="edit-profile-form">'+
+    '<label class="sm muted" style="display:block;margin-bottom:8px">Имя</label>'+
+    '<input type="text" class="inp" id="edit-fname" value="'+u.firstName+'" placeholder="Ваше имя">'+
+    '<button class="btn btn-fire" onclick="saveProfileEdit()" style="margin-top:8px">💾 Сохранить</button></div></div>';
+
+  h+='<div class="card"><h3 style="margin-bottom:16px">🏆 Уровень и XP</h3>'+
+    '<div class="level-bar" style="margin-bottom:0"><div class="level-header"><div class="level-badge"><div class="level-icon">'+levelInfo.current.icon+'</div>'+
+    '<div class="level-info"><div class="level-name">Уровень '+levelInfo.current.level+': '+levelInfo.current.name+'</div>'+
+    '<div class="level-xp">'+(u.xp||0)+' XP всего • '+levelInfo.xpInLevel+' / '+levelInfo.xpNeeded+' до следующего</div></div></div></div>'+
+    '<div class="xp-bar" style="margin-top:12px"><div class="xp-bar-fill" style="width:'+levelInfo.progress+'%"></div></div></div>';
+
+  h+='<div class="card"><h3 style="margin-bottom:16px">💰 FitCoins: '+(u.fitCoins||0)+'</h3>'+
+    '<p class="sm muted" style="margin-bottom:16px">Обменивайте баллы на награды!</p>';
+  REWARDS.forEach(r=>{
+    const canAfford=(u.fitCoins||0)>=r.cost;
+    h+='<div class="reward-item"><div class="reward-icon">'+r.icon+'</div>'+
+      '<div class="reward-info"><div class="reward-name">'+r.name+'</div><div class="reward-desc">'+r.desc+'</div></div>'+
+      '<button class="btn btn-s '+(canAfford?'btn-fire':'btn-g')+'" style="width:auto;'+(canAfford?'':'opacity:.5;cursor:not-allowed')+'" onclick="'+(canAfford?'redeemReward(\''+r.id+'\','+r.cost+')':'')+'" '+(canAfford?'':'disabled')+'>'+
+      '<span style="color:var(--gold)">💰 '+r.cost+'</span></button></div>';
+  });
+  h+='</div>';
+
+  h+='<div class="card"><h3 style="margin-bottom:16px">📊 Показатели для расчёта ккалорий</h3>'+
+    '<div class="flex ic jb" style="margin-bottom:12px"><span class="sm">Текущие значения</span>'+
+    '<button class="btn btn-g btn-s" onclick="toggleEditMetrics()" style="width:auto">'+(isEditingMetrics?'✕ Отмена':'✏️ Изменить')+'</button></div>'+
+    '<div class="metrics-container" style="margin-bottom:16px">'+
+    '<div class="metric-box"><div class="metric-bar"><span class="metric-value">'+u.quizData.cw+' кг</span></div><div class="metric-label">Текущий вес</div></div>'+
+    '<div class="metric-box"><div class="metric-bar"><span class="metric-value">'+u.quizData.tw+' кг</span></div><div class="metric-label">Желаемый вес</div></div>'+
+    '<div class="metric-box"><div class="metric-bar"><span class="metric-value">'+u.quizData.height+' см</span></div><div class="metric-label">Рост</div></div>'+
+    '<div class="metric-box"><div class="metric-bar"><span class="metric-value">'+u.quizData.age+' лет</span></div><div class="metric-label">Возраст</div></div></div>'+
+    '<div class="edit-form '+(isEditingMetrics?'active':'')+'" id="edit-metrics-form">'+
+    '<label class="sm muted" style="display:block;margin-bottom:8px">Текущий вес (кг)</label>'+
+    '<input type="number" class="inp" id="edit-cw" value="'+u.quizData.cw+'" min="30" max="250">'+
+    '<label class="sm muted" style="display:block;margin-bottom:8px">Желаемый вес (кг)</label>'+
+    '<input type="number" class="inp" id="edit-tw" value="'+u.quizData.tw+'" min="30" max="200">'+
+    '<label class="sm muted" style="display:block;margin-bottom:8px">Рост (см)</label>'+
+    '<input type="number" class="inp" id="edit-height" value="'+u.quizData.height+'" min="120" max="230">'+
+    '<label class="sm muted" style="display:block;margin-bottom:8px">Возраст</label>'+
+    '<input type="number" class="inp" id="edit-age" value="'+u.quizData.age+'" min="16" max="80">'+
+    '<label class="sm muted" style="display:block;margin-bottom:8px">Цель</label>'+
+    '<select class="inp" id="edit-goal"><option value="cut" '+(u.quizData.goal==='cut'?'selected':'')+'>Похудеть</option>'+
+    '<option value="gain" '+(u.quizData.goal==='gain'?'selected':'')+'>Набрать массу</option>'+
+    '<option value="tone" '+(u.quizData.goal==='tone'||!u.quizData.goal?'selected':'')+'>Поддерживать тонус</option></select>'+
+    '<button class="btn btn-fire" onclick="saveMetricsEdit()" style="margin-top:8px">💾 Сохранить</button></div></div>';
+
+  h+='<div class="card"><h3 style="margin-bottom:16px">📅 Дней тренировок в неделю</h3>'+
+    '<p class="sm muted" style="margin-bottom:16px">Сейчас: <strong>'+daysPerWeek+' дней</strong></p>'+
+    '<div class="chip '+(daysPerWeek===3?'sel':'')+'" onclick="changeDays(3)"><span style="font-size:24px">3️⃣</span><div><div style="font-weight:600">3 дня</div><div class="xs muted">Пн/Ср/Пт</div></div></div>'+
+    '<div class="chip '+(daysPerWeek===4?'sel':'')+'" onclick="changeDays(4)"><span style="font-size:24px">4️⃣</span><div><div style="font-weight:600">4 дня</div><div class="xs muted">Пн/Ср/Пт/Вс</div></div></div>'+
+    '<div class="chip '+(daysPerWeek===5?'sel':'')+'" onclick="changeDays(5)"><span style="font-size:24px">5️⃣</span><div><div style="font-weight:600">5 дней</div><div class="xs muted">Пн/Вт/Чт/Пт/Вс</div></div></div>'+
+    '<div class="chip '+(daysPerWeek===6?'sel':'')+'" onclick="changeDays(6)"><span style="font-size:24px">6️⃣</span><div><div style="font-weight:600">6 дней</div><div class="xs muted">Пн-Сб</div></div></div></div>';
+
+  h+='<div class="card"><h3 style="margin-bottom:16px">🎨 Тема оформления</h3>'+
+    '<div class="theme-toggle" onclick="toggleTheme()"><span class="theme-toggle-icon">'+(theme==='dark'?'🌙':'☀️')+'</span>'+
+    '<span class="theme-toggle-label">'+(theme==='dark'?'Тёмная тема':'Светлая тема')+'</span></div></div>';
+
+  h+='<div class="card"><h3 style="margin-bottom:16px">🔔 Напоминания</h3>'+
+    '<div class="reminder-card"><div class="flex ic gap"><div class="reminder-icon">🏋️</div>'+
+    '<div class="reminder-info"><div class="reminder-title">Напоминание о тренировке</div><div class="reminder-desc">Ежедневное напоминание в выбранное время</div></div>'+
+    '<div class="reminder-toggle '+(reminders.workout.enabled?'on':'')+'" onclick="toggleReminder(\'workout\')"></div></div>'+
+    '<div class="time-slots">';
+  ['08:00','09:00','10:00','12:00','13:00','14:00','16:00','18:00','19:00','20:00','21:00','22:00'].forEach(t=>{
+    h+='<div class="time-slot '+(reminders.workout.time===t?'sel':'')+'" onclick="setReminderTime(\'workout\',\''+t+'\')">'+t+'</div>';
+  });
+  h+='</div></div>';
+
+  h+='<div class="reminder-card"><div class="flex ic gap"><div class="reminder-icon">💧</div>'+
+    '<div class="reminder-info"><div class="reminder-title">Напоминание о воде</div><div class="reminder-desc">Каждые 2 часа (8:00-22:00)</div></div>'+
+    '<div class="reminder-toggle '+(reminders.water.enabled?'on':'')+'" onclick="toggleReminder(\'water\')"></div></div></div></div>';
+
+  if(info.isLifetime){
+    h+='<div class="card" style="border-color:var(--gold);background:linear-gradient(135deg,rgba(251,191,36,.1),rgba(245,158,11,.05))"><div class="sm muted" style="margin-bottom:4px">Текущий тариф</div>'+
+      '<div style="font-weight:700;color:var(--gold);font-size:16px">💎 Навсегда</div>'+
+      '<p class="sm" style="margin-top:8px;color:var(--text)">Безграничное количество тренировок</p></div>';
+  }else{
+    h+='<div class="card"><div style="background:var(--bg2);padding:14px;border-radius:12px;margin-bottom:16px"><div class="sm muted" style="margin-bottom:4px">Текущий тариф</div>'+
+      '<div style="font-weight:700;color:var(--fire)">'+typeLabels[info.type]+'</div></div>'+
+      '<button class="btn btn-fire" style="margin-bottom:12px" onclick="S.view=\'pay\';go()">🔥 Управление подпиской</button>'+
+      '<button class="btn btn-err" onclick="reset()">🚪 Сбросить все данные</button></div>';
+  }
+  return h;
+}
+
+function toggleEditProfile(){S.editingProfile=!S.editingProfile;go()}
+function toggleEditMetrics(){S.editingMetrics=!S.editingMetrics;go()}
+function saveProfileEdit(){
+  try{const fi=document.getElementById('edit-fname');if(!fi){toast('❌ Ошибка');return}
+    const nf=fi.value.trim();if(!nf){toast('⚠️ Имя не может быть пустым!');fi.focus();return}
+    S.user.firstName=nf;S.editingProfile=false;save();toast('✅ Профиль обновлён!');go()}
+  catch(e){toast('❌ Ошибка: '+e.message)}
+}
+function saveMetricsEdit(){
+  try{const cw=+document.getElementById('edit-cw').value;const tw=+document.getElementById('edit-tw').value;
+    const height=+document.getElementById('edit-height').value;const age=+document.getElementById('edit-age').value;
+    const goal=document.getElementById('edit-goal').value;
+    if(!cw||!tw||!height||!age){toast('⚠️ Заполните все поля!');return}
+    if(Math.abs(tw-cw)>50){toast('⚠️ Желаемый вес должен отличаться не более чем на 50 кг!');return}
+    S.user.quizData.cw=cw;S.user.quizData.tw=tw;S.user.quizData.height=height;S.user.quizData.age=age;S.user.quizData.goal=goal;
+    S.editingMetrics=false;save();toast('✅ Показатели обновлены!');go()}
+  catch(e){toast('❌ Ошибка: '+e.message)}
+}
+function changeDays(days){S.user.quizData.days=days;save();toast('✅ Обновлено: '+days+' дней');go()}
+function setReminderTime(type,time){
+  if(!S.user.reminders)S.user.reminders={workout:{enabled:true,time:'09:00'},water:{enabled:true}};
+  S.user.reminders[type].time=time;save();setupReminders();toast('✅ Время: '+time);go();
+}
+function toggleTheme(){
+  const current=localStorage.getItem('theme')||'dark';
+  const newTheme=current==='dark'?'light':'dark';
+  localStorage.setItem('theme',newTheme);
+  document.documentElement.setAttribute('data-theme',newTheme);
+  go();
+}
+function toggleReminder(type){
+  if(!S.user.reminders)S.user.reminders={workout:{enabled:true,time:'09:00'},water:{enabled:true}};
+  S.user.reminders[type].enabled=!S.user.reminders[type].enabled;save();setupReminders();
+  toast(S.user.reminders[type].enabled?'✅ Включено':'❌ Выключено');go();
+}
+function setupReminders(){
+  Object.values(reminderIntervals).forEach(interval=>clearInterval(interval));reminderIntervals={};
+  if(!S.user||!S.user.reminders)return;
+  reminderIntervals.workout=setInterval(()=>{
+    const now=new Date();const currentTime=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+    if(S.user.reminders.workout.enabled&&currentTime===S.user.reminders.workout.time){
+      if(Notification.permission==='granted'){new Notification('🏋️ Время тренировки!')}
+      else{toast('🏋️ Время тренировки!')}}
+  },60000);
+  reminderIntervals.water=setInterval(()=>{
+    const now=new Date();const hour=now.getHours();const minute=now.getMinutes();
+    if(S.user.reminders.water.enabled&&hour%2===0&&minute===0&&hour>=8&&hour<=22){
+      if(Notification.permission==='granted'){new Notification('💧 Время пить воду!')}
+      else{toast('💧 Время пить воду!')}}
+  },60000);
+}
+function redeemReward(id,cost){
+  if(!S.user||!confirm('Потратить '+cost+' FitCoins?'))return;
+  if((S.user.fitCoins||0)<cost){toast('❌ Недостаточно FitCoins');return}
+  S.user.fitCoins-=cost;
+  if(!S.user.redeemedRewards)S.user.redeemedRewards=[];
+  S.user.redeemedRewards.push({id,date:Date.now()});
+  if(id==='free_week'&&S.user.subscription){S.user.subscription.unlockDate+=7*DAY_MS}
+  else if(id==='free_month'&&S.user.subscription){S.user.subscription.unlockDate+=30*DAY_MS}
+  save();toast('🎉 Награда получена!');go();
+}
+function exportPlan(){window.print();toast('📄 План экспортирован!')}
+function bDash(){document.querySelectorAll('.tab').forEach(t=>{t.onclick=()=>{S.tab=t.dataset.t;go()}})}
+function toast(msg){
+  const r=document.getElementById('toast');
+  r.innerHTML='<div class="toast"><span style="font-size:20px">✅</span><span style="font-size:14px;font-weight:500">'+msg+'</span></div>';
+  setTimeout(()=>r.querySelector('.toast')?.classList.add('show'),10);
+  setTimeout(()=>{const t=r.querySelector('.toast');if(t){t.classList.remove('show');setTimeout(()=>r.innerHTML='',300)}},3000);
+}
+function daysLeft(ts){return Math.max(0,Math.ceil((ts+TRIAL-Date.now())/DAY_MS))}
+function checkDailyUpdate(){if(!S.user)return;const today=new Date().toDateString();
+  if(S.user.lastPlanUpdate!==today){S.user.lastPlanUpdate=today;save();toast('🔄 План обновлён!');go()}}
+setInterval(checkDailyUpdate,60000);
+
+const savedTheme=localStorage.getItem('theme')||'dark';
+document.documentElement.setAttribute('data-theme',savedTheme);
+if('Notification' in window&&Notification.permission==='default'){Notification.requestPermission()}
+
+load();initMusicPlayer();
+if(S.user){S.view='dash';S.tab='workout';setupReminders()}
+go();
+</script>
+
+<div id="mini-player" class="mini-player hidden">
+  <button class="music-btn" style="width:40px;height:40px;font-size:16px" onclick="togglePlay()">▶</button>
+  <div class="mini-track-info">
+    <div class="mini-track-name" id="mini-track-name">Нет трека</div>
+    <div class="mini-track-artist" id="mini-track-artist">0:00</div>
+    <div class="mini-progress" onclick="seekAudio(event)"><div class="mini-progress-fill"></div></div>
+  </div>
+</div>
+</body>
+</html>
