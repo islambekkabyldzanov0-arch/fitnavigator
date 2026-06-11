@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ФитНавигатор 🔥</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app" id="app"></div>
+<div id="modal"></div>
+<div id="toast"></div>
+<div id="workout-mode"></div>
+<audio id="global-audio" preload="auto"></audio>
+
+<!-- Скрипты в правильном порядке: данные → логика -->
+<script src="data.js"></script>
+<script src="app.js"></script>
+
+<!-- Мини-плеер -->
+<div id="mini-player" class="mini-player hidden">
+  <button class="music-btn" style="width:40px;height:40px;font-size:16px" onclick="togglePlay()">▶</button>
+  <div class="mini-track-info">
+    <div class="mini-track-name" id="mini-track-name">Нет трека</div>
+    <div class="mini-track-artist" id="mini-track-artist">0:00</div>
+    <div class="mini-progress" onclick="seekAudio(event)"><div class="mini-progress-fill"></div></div>
+  </div>
+</div>
+</body>
+</html>
